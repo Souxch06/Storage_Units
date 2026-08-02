@@ -103,8 +103,9 @@ public final class UnitItemFactory {
      *     <li>{@code 100000} → {@code "100 000"}</li>
      *     <li>{@code 5000000} → {@code "5 000 000"}</li>
      * </ul>
-     * Utilise des espaces fines (insécables) comme séparateurs de milliers
-     * pour rester lisible dans Minecraft.
+     * <p>Note : on utilise l'espace ASCII normal (et non un espace
+     * insécable Unicode) car certaines polices Minecraft remplacent
+     * l'insécable par un caractère bizarre type ⎵.</p>
      */
     @NotNull
     private static String formatCapacity(long n) {
@@ -113,7 +114,7 @@ public final class UnitItemFactory {
         String s = String.valueOf(n);
         int len = s.length();
         for (int i = 0; i < len; i++) {
-            if (i > 0 && (len - i) % 3 == 0) sb.append('\u00A0'); // espace insécable
+            if (i > 0 && (len - i) % 3 == 0) sb.append(' ');
             sb.append(s.charAt(i));
         }
         return sb.toString();

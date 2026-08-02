@@ -36,7 +36,8 @@ public final class UnitItemListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlace(@NotNull BlockPlaceEvent event) {
-        ItemStack inHand = event.getItemInHand();
+        // getItem() (1.21+) remplace l'antique getItemInHand().
+        ItemStack inHand = event.getItem();
         UnitItemFactory factory = plugin.getUnitItemFactory();
         if (!factory.isUnitItem(inHand)) return;
 
