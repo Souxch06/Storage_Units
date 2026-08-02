@@ -5,6 +5,7 @@ import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.config.LanguageManager;
 import fr.souxch06.storageunits.manager.StorageManager;
 import fr.souxch06.storageunits.model.StorageUnit;
+import fr.souxch06.storageunits.util.ItemUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -48,8 +49,8 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
                              @NotNull String label,
                              @NotNull String[] args) {
         if (!sender.hasPermission("storageunits.use")) {
-            sender.sendMessage(plugin.getLanguageManager().get(
-                    "msg.no-permission", "&cVous n'avez pas la permission."));
+            sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.no-permission", "&cVous n'avez pas la permission.")));
             return true;
         }
         if (args.length == 0) {
@@ -62,6 +63,7 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
             case "reload" -> handleReload(sender);
             case "status" -> handleStatus(sender);
             case "list" -> handleList(sender, Arrays.copyOfRange(args, 1, args.length));
+            case "craft" -> handleCraft(sender);
             default -> sendHelp(sender);
         }
         return true;
@@ -69,66 +71,87 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
 
     private void handleGive(@NotNull CommandSender sender, @NotNull String[] args) {
         if (!sender.hasPermission("storageunits.give")) {
-            sender.sendMessage(plugin.getLanguageManager().get(
-                    "msg.no-permission", "&cVous n'avez pas la permission."));
+            sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.no-permission", "&cVous n'avez pas la permission.")));
             return;
         }
         Player target;
         int level = plugin.getConfigManager().getDefaultLevel();
         if (args.length == 0) {
             if (!(sender instanceof Player p)) {
-                sender.sendMessage(plugin.getLanguageManager().get(
-                        "msg.specify-player", "&cSpécifiez un joueur."));
+                sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                        "msg.specify-player", "&cSpécifiez un joueur.")));
                 return;
             }
             target = p;
         } else {
             target = Bukkit.getPlayerExact(args[0]);
             if (target == null) {
-                sender.sendMessage(plugin.getLanguageManager().get(
+                sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                         "msg.player-not-found", "&cJoueur introuvable : {player}")
-                        .replace("{player}", args[0]));
+                        .replace("{player}", args[0])));
                 return;
             }
             if (args.length >= 2) {
                 try {
                     level = Integer.parseInt(args[1]);
                 } catch (NumberFormatException ex) {
-                    sender.sendMessage(plugin.getLanguageManager().get(
+                    sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                             "msg.invalid-number", "&cNombre invalide : {value}")
-                            .replace("{value}", args[1]));
+                            .replace("{value}", args[1])));
                     return;
                 }
             }
         }
         if (plugin.getConfigManager().getLevel(level) == null) {
-            sender.sendMessage(plugin.getLanguageManager().get(
+            sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                     "msg.invalid-level", "&cNiveau invalide : {level}")
-                    .replace("{level}", String.valueOf(level)));
+                    .replace("{level}", String.valueOf(level))));
             return;
         }
         ItemStack item = plugin.getUnitItemFactory().createUnitItem(level);
         target.getInventory().addItem(item);
-        sender.sendMessage(plugin.getLanguageManager().get(
+        sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                 "msg.give-success", "&aVous avez donné une unité de niveau {level} à {player}.")
                 .replace("{level}", String.valueOf(level))
-                .replace("{player}", target.getName()));
+                .replace("{player}", target.getName())));
         if (sender != target) {
-            target.sendMessage(plugin.getLanguageManager().get(
+            target.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                     "msg.give-received", "&aVous avez reçu une unité de stockage (niveau {level}).")
-                    .replace("{level}", String.valueOf(level)));
+                    .replace("{level}", String.valueOf(level))));
         }
     }
 
     private void handleReload(@NotNull CommandSender sender) {
         if (!sender.hasPermission("storageunits.admin")) {
-            sender.sendMessage(plugin.getLanguageManager().get(
-                    "msg.no-permission", "&cVous n'avez pas la permission."));
+            sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.no-permission", "&cVous n'avez pas la permission.")));
             return;
         }
         plugin.reloadAll();
-        sender.sendMessage(plugin.getLanguageManager().get(
-                "msg.reload-success", "&aConfiguration rechargée."));
+        sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                "msg.reload-success", "&aConfiguration rechargée.")));
+    }
+
+    private void handleCraft(@NotNull CommandSender sender) {
+        ConfigManager cfg = plugin.getConfigManager();
+        boolean enabled = cfg.isCraftEnabled();
+        sender.sendMessage(ItemUtil.colorize("&6=== Storage Units - Craft ==="));
+        if (enabled) {
+            sender.sendMessage(ItemUtil.colorize(
+                    plugin.getLanguageManager().get("msg.craft-enabled",
+                            "&aLe craft des unités est activé.")));
+            sender.sendMessage(ItemUtil.colorize(
+                    "&7Éditez &erecipes.yml &7pour modifier les recettes."));
+        } else {
+            sender.sendMessage(ItemUtil.colorize(
+                    plugin.getLanguageManager().get("msg.craft-disabled-status",
+                            "&cLe craft des unités est désactivé.")));
+            sender.sendMessage(ItemUtil.colorize(
+                    "&7Pour l'activer, passez &ecraft.enabled &7à &etrue &7dans &econfig.yml"));
+            sender.sendMessage(ItemUtil.colorize(
+                    "&7puis &e/su reload&7. Les unités sont obtenues via &e/su give&7."));
+        }
     }
 
     private void handleStatus(@NotNull CommandSender sender) {
@@ -142,19 +165,16 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
                 })
                 .sum();
         LanguageManager lang = plugin.getLanguageManager();
-        sender.sendMessage(Component.text("=== Storage Units ===", NamedTextColor.GOLD));
-        sender.sendMessage(Component.text(
+        sender.sendMessage(ItemUtil.colorize("&6=== Storage Units ==="));
+        sender.sendMessage(ItemUtil.colorize(
                 lang.get("status.units", "&7Unités chargées : &e{count}")
-                        .replace("{count}", String.valueOf(manager.getAll().size())),
-                NamedTextColor.WHITE));
-        sender.sendMessage(Component.text(
+                        .replace("{count}", String.valueOf(manager.getAll().size()))));
+        sender.sendMessage(ItemUtil.colorize(
                 lang.get("status.total", "&7Objets stockés : &e{total}")
-                        .replace("{total}", String.valueOf(total)),
-                NamedTextColor.WHITE));
-        sender.sendMessage(Component.text(
+                        .replace("{total}", String.valueOf(total))));
+        sender.sendMessage(ItemUtil.colorize(
                 lang.get("status.capacity", "&7Capacité totale : &e{cap}")
-                        .replace("{cap}", String.valueOf(capacity)),
-                NamedTextColor.WHITE));
+                        .replace("{cap}", String.valueOf(capacity))));
     }
 
     private void handleList(@NotNull CommandSender sender, @NotNull String[] args) {
@@ -172,12 +192,12 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
         int perPage = 10;
         int from = page * perPage;
         int to = Math.min(units.size(), from + perPage);
-        sender.sendMessage(plugin.getLanguageManager().get(
+        sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                 "msg.list-header", "&6Liste des unités (page {page})")
-                .replace("{page}", String.valueOf(page + 1)));
+                .replace("{page}", String.valueOf(page + 1))));
         if (from >= units.size()) {
-            sender.sendMessage(plugin.getLanguageManager().get(
-                    "msg.list-empty", "&7Aucune unité sur cette page."));
+            sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.list-empty", "&7Aucune unité sur cette page.")));
             return;
         }
         for (int i = from; i < to; i++) {
@@ -191,15 +211,17 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
 
     private void sendHelp(@NotNull CommandSender sender) {
         LanguageManager lang = plugin.getLanguageManager();
-        sender.sendMessage(Component.text("=== Storage Units ===", NamedTextColor.GOLD));
-        sender.sendMessage(Component.text(lang.get("help.give",
-                "&e/su give [joueur] [niveau] &7- donne une unité"), NamedTextColor.WHITE));
-        sender.sendMessage(Component.text(lang.get("help.reload",
-                "&e/su reload &7- recharge la configuration"), NamedTextColor.WHITE));
-        sender.sendMessage(Component.text(lang.get("help.status",
-                "&e/su status &7- statut global"), NamedTextColor.WHITE));
-        sender.sendMessage(Component.text(lang.get("help.list",
-                "&e/su list [page] &7- liste des unités"), NamedTextColor.WHITE));
+        sender.sendMessage(ItemUtil.colorize("&6=== Storage Units ==="));
+        sender.sendMessage(ItemUtil.colorize(lang.get("help.give",
+                "&e/su give [joueur] [niveau] &7- donne une unité")));
+        sender.sendMessage(ItemUtil.colorize(lang.get("help.reload",
+                "&e/su reload &7- recharge la configuration")));
+        sender.sendMessage(ItemUtil.colorize(lang.get("help.status",
+                "&e/su status &7- statut global")));
+        sender.sendMessage(ItemUtil.colorize(lang.get("help.list",
+                "&e/su list [page] &7- liste des unités")));
+        sender.sendMessage(ItemUtil.colorize(lang.get("help.craft",
+                "&e/su craft &7- état du système de craft")));
     }
 
     @Override
@@ -208,7 +230,7 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
                                                 @NotNull String alias,
                                                 @NotNull String[] args) {
         if (args.length == 1) {
-            return Stream.of("give", "reload", "status", "list")
+            return Stream.of("give", "reload", "status", "list", "craft")
                     .filter(s -> s.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

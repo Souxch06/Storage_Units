@@ -1,15 +1,31 @@
 # =====================================================================
 #  Recettes de craft des unités de stockage.
-#  Chaque recette utilise les matériaux du jeu et donne un ItemStack
-#  "Unité de stockage" tagué par le plugin.
+#
+#  IMPORTANT : TOUTES les recettes de ce fichier sont désactivées par
+#  défaut (enabled: false). Les développeurs / admins du serveur peuvent
+#  les activer, les modifier ou en ajouter librement.
+#
+#  Activez-les au niveau de la config principale (config.yml -> craft.enabled)
+#  ET/OU au niveau de chaque recette ci-dessous. Les deux doivent être à
+#  true pour que la recette soit enregistrée dans le registre du serveur.
 # =====================================================================
 
+craft:
+  # Le booléen global craft.enabled de config.yml doit aussi être à true.
+  # Laissez les recettes à enabled: false ci-dessous pour fournir des
+  # EXEMPLES / TEMPLATES prêts à activer en une seule modification.
+  enabled: false  # -> se règle aussi dans config.yml (craft.enabled)
+
 recipes:
-  # Recette de base : 1 coffre + 4 lingots de fer => unité niveau 1
+
+  # ----------------------------------------------------------------
+  #  Exemple 1 : recette de base (coffre + 4 lingots de fer)
+  #  Décommentez / passez à enabled: true pour l'activer.
+  # ----------------------------------------------------------------
   basic_chest:
-    enabled: true
-    level: 1
-    amount: 1
+    enabled: false         # <- mettre à true pour activer
+    level: 1               # niveau de l'unité donnée par le craft
+    amount: 1              # quantité d'unités données par craft
     shape:
       - "III"
       - "ICI"
@@ -18,9 +34,11 @@ recipes:
       I: IRON_INGOT
       C: CHEST
 
-  # Recette avancée : unité niveau 2
+  # ----------------------------------------------------------------
+  #  Exemple 2 : recette avancée (niveau 2)
+  # ----------------------------------------------------------------
   advanced_chest:
-    enabled: true
+    enabled: false
     level: 2
     amount: 1
     shape:
@@ -31,3 +49,17 @@ recipes:
       D: DIAMOND
       G: GOLD_INGOT
       C: CHEST
+
+  # ----------------------------------------------------------------
+  #  Exemple 3 : recette "lite" (1 seul bloc de fer au centre)
+  # ----------------------------------------------------------------
+  simple_chest:
+    enabled: false
+    level: 1
+    amount: 1
+    shape:
+      - "   "
+      - " I "
+      - "   "
+    ingredients:
+      I: IRON_BLOCK

@@ -35,7 +35,9 @@ passant par Geyser/Floodgate, car :
 * 🔌 API publique (pour d'autres plugins)
 * ⚙️ 100 % configurable (capacités, items, sons, recettes, messages)
 * 🔊 Sons Minecraft vanilla (configurables)
-* 🧰 Recettes de craft configurables (YAML)
+* 🧰 Recettes de craft configurables (YAML) — **désactivées par défaut**
+* 🪪 Item clairement identifiable dans l'inventaire (nom « ✦ Unité de stockage » + lore + glow + tag PDC) — **distinct d'un coffre vanilla**
+* 🌐 Bloc posé = coffre vanilla, donc **identique sur Java & Bedrock**
 
 ---
 
@@ -101,6 +103,7 @@ Le jar prêt à l'emploi est dans `target/StorageUnits-1.0.0.jar`.
 | `/su give <joueur> [niveau]` | Donne une unité à un joueur. | `storageunits.give` |
 | `/su status` | Affiche le statut global. | `storageunits.use` |
 | `/su list [page]` | Liste les unités chargées. | `storageunits.use` |
+| `/su craft` | Affiche l'état du système de craft. | `storageunits.use` |
 | `/su reload` | Recharge la configuration. | `storageunits.admin` |
 
 **Placez** ensuite l'item coffre reçu. Un coffre vanilla est posé et marqué
@@ -109,6 +112,14 @@ via le PDC. **Clic droit** sur le coffre pour ouvrir l'interface :
 * 🟩 Déposer : vide l'inventaire du joueur des items compatibles dans l'unité
 * 🟥 Retirer : retire 1 stack (ou tout avec Shift)
 * 🟪 Améliorer : passe au niveau supérieur (si configuré)
+
+> 🪪 **Comment reconnaître une unité d'un coffre vanilla ?**
+> L'item « ✦ Unité de stockage » se distingue par :
+> - son **nom en or gras** avec le préfixe `✦`
+> - son **lore** mentionnant « Storage Units » et la capacité
+> - l'**effet brillant** (enchantement invisible)
+> - le **tag PDC** `storageunits:unit_item` (côté serveur)
+> Le bloc posé reste un coffre vanilla, pour rester visible à l'identique par Java et Bedrock.
 
 ---
 
@@ -157,10 +168,26 @@ levels:
 
 ### Recettes (`recipes.yml`)
 
+**⚠️ Le craft est DÉSACTIVÉ PAR DÉFAUT** (config.yml → `craft.enabled: false`
+et toutes les recettes du `recipes.yml` sont aussi à `enabled: false`).
+Les développeurs / admins sont libres d'activer / désactiver / créer
+les recettes qu'ils souhaitent.
+
+Pour activer le craft :
+
+1. Dans `config.yml` : passer `craft.enabled` à `true`.
+2. Dans `recipes.yml` : passer la recette voulue à `enabled: true`.
+3. `/su reload` (ou redémarrer le serveur).
+
 ```yaml
+# config.yml
+craft:
+  enabled: true   # <- passer à true
+
+# recipes.yml
 recipes:
   basic_chest:
-    enabled: true
+    enabled: true   # <- passer à true
     level: 1
     amount: 1
     shape:

@@ -13,23 +13,11 @@ commands:
     aliases: [ su, storageunit ]
     description: Commande principale du plugin Storage Units.
     usage: |
-      /<command> give              - Donne une unité au joueur.
-      /<command> give <joueur>     - Donne une unité au joueur ciblé.
-      /<command> reload            - Recharge la configuration.
-      /<command> status            - Affiche le statut global.
-      /<command> list              - Liste les unités chargées.
-    permission: storageunits.use
-  storageunitsgive:
-    description: Donne une unité de stockage. Sous-commande.
-    usage: /<command> [joueur]
-    permission: storageunits.give
-  storageunitsreload:
-    description: Recharge la configuration du plugin.
-    usage: /<command>
-    permission: storageunits.admin
-  storageunitsstatus:
-    description: Affiche le statut global (unités, capacité, etc.).
-    usage: /<command>
+      /<command> give [joueur] [niveau]  - Donne une unité (par défaut à soi-même).
+      /<command> reload                  - Recharge la configuration et les recettes.
+      /<command> status                  - Affiche le statut global.
+      /<command> list  [page]            - Liste les unités chargées.
+      /<command> craft                   - Affiche l'état du système de craft.
     permission: storageunits.use
 
 # ---------- Permissions ----------

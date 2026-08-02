@@ -33,22 +33,57 @@ levels:
     display-name: "Niveau 5 (Légendaire)"
 
 # ---------- Apparence de l'item "Unité de stockage" ----------
+#
+# IMPORTANT : par défaut, le bloc posé est un coffre VANILLA pour rester
+# immédiatement compatible avec Bedrock (Geyser/Floodgate). Pour le
+# différencier visuellement d'un coffre classique, on s'appuie sur :
+#   - le nom custom (en or, avec un préfixe distinctif)
+#   - le lore (description + tags de couleur)
+#   - l'effet "glowing" (enchantement invisible)
+#   - un tag PersistentDataContainer (storageunits:unit_item) côté serveur
+#
+# Les développeurs qui souhaitent un modèle 3D / texture différent peuvent
+# fournir leur propre pack de ressources et renseigner `custom-model-data`
+# (0 = aucun, le bloc utilise alors la texture vanilla du coffre).
+#
+# /!\ Si vous activez `custom-model-data`, Bedrock via Geyser peut afficher
+# le coffre vanilla par défaut (CustomModelData pas encore 100 % supporté
+# sur Bedrock). Gardez 0 pour une compatibilité parfaite Java + Bedrock.
 unit:
-  # Le bloc placé : CHEST (vanilla, visible identiquement par Java et Bedrock)
+  # Matériau du bloc posé : CHEST (vanilla) = visible à l'identique Java & Bedrock
   material: CHEST
-  # Nom affiché au-dessus de l'item (codes & couleur + hex #RRGGBB)
-  name: "&6&lUnité de stockage"
-  # Lore (description sous le nom)
+  # Nom de l'item. Le préfixe distinctif évite toute confusion avec un coffre vanilla.
+  name: "&6&l✦ Unité de stockage"
+  # Lore. Les placeholders {level} et {capacity} sont automatiquement remplacés
+  # à la création de l'item en fonction du niveau donné.
   lore:
-    - "&7Stocke une très grande quantité"
-    - "&7d'un seul type d'objet."
+    - "&7&oCoffre de stockage intelligent"
+    - "&7&opeut contenir jusqu'à &e{capacity} &7&oobjets"
+    - "&7&od'un seul type à la fois."
     - ""
-    - "&eCompatible Java & Bedrock"
-  # Item enchanté (apparence brillante)
+    - "&8▸ Niveau : &e{level}"
+    - "&8▸ Capacité : &e{capacity}"
+    - ""
+    - "&8&l[Storage Units] &7&oClic droit pour placer"
+    - "&7&oCompatible Java & Bedrock"
+  # Apparence brillante dans l'inventaire (enchantement invisible)
   glowing: true
-  # CustomModelData. 0 = aucun. Mettez > 0 si vous utilisez un pack de
-  # ressources avec un modèle personnalisé.
+  # CustomModelData. 0 = aucun (apparence vanilla). Voir note ci-dessus.
   custom-model-data: 0
+
+# ---------- Craft ----------
+# Les recettes sont DÉSACTIVÉES PAR DÉFAUT (enabled: false) pour que les
+# développeurs / admins puissent décider eux-mêmes de comment les joueurs
+# obtiennent une unité : commande /su give, loot table, autre plugin, etc.
+#
+# Pour les activer ou en ajouter, éditez le fichier recipes.yml à la racine
+# du dossier du plugin (plugins/StorageUnits/recipes.yml). Mettez simplement
+# `enabled: true` sur la recette de votre choix.
+craft:
+  # true  -> enregistre les recettes actives de recipes.yml au démarrage du serveur
+  # false -> AUCUNE recette n'est ajoutée. Les unités sont obtenues via
+  #          /su give, /su give <joueur> [niveau] ou tout autre moyen.
+  enabled: false
 
 # ---------- Sons ----------
 # Toutes les clés sont facultatives. En cas d'erreur, un son par défaut
@@ -81,6 +116,7 @@ messages:
   invalid-number: "&cNombre invalide : {value}"
   invalid-level: "&cNiveau invalide : {level}"
   reload-success: "&aConfiguration rechargée."
+  craft-disabled: "&cLe craft des unités est désactivé. Utilisez /su give."
   list-header: "&6Liste des unités (page {page})"
   list-empty: "&7Aucune unité sur cette page."
   status-units: "&7Unités chargées : &e{count}"

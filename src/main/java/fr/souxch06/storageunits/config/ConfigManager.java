@@ -63,6 +63,7 @@ public final class ConfigManager {
     private final Map<Integer, StorageLevel> levels = new LinkedHashMap<>();
     private int defaultLevel = 1;
     private int maxStacksPerClick = 2304;
+    private boolean craftEnabled = false;
 
     public ConfigManager(@NotNull Plugin plugin) {
         this.plugin = Objects.requireNonNull(plugin, "plugin");
@@ -111,6 +112,7 @@ public final class ConfigManager {
 
         this.defaultLevel = config.getInt("settings.default-level", 1);
         this.maxStacksPerClick = config.getInt("settings.max-stacks-per-click", 2304);
+        this.craftEnabled = config.getBoolean("craft.enabled", false);
     }
 
     private void loadDefaultLevels() {
@@ -162,6 +164,16 @@ public final class ConfigManager {
     /** @return le nombre maximum d'items déplaçables en un clic. */
     public int getMaxStacksPerClick() {
         return maxStacksPerClick;
+    }
+
+    /**
+     * @return {@code true} si le craft des unités est activé dans la
+     * configuration principale. La config <em>et</em> chaque recette
+     * doivent toutes deux être activées pour qu'une recette soit
+     * effectivement enregistrée (double-sécurité).
+     */
+    public boolean isCraftEnabled() {
+        return craftEnabled;
     }
 
     // ---------- Apparence de l'item "Unité de stockage" ----------

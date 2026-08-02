@@ -4,6 +4,7 @@ help:
   reload: "&e/su reload &7- reload configuration"
   status: "&e/su status &7- global status"
   list: "&e/su list [page] &7- list units"
+  craft: "&e/su craft &7- craft system status"
 
 status:
   units: "&7Loaded units: &e{count}"
@@ -54,5 +55,8 @@ msg:
   invalid-number: "&cInvalid number: {value}"
   invalid-level: "&cInvalid level: {level}"
   reload-success: "&aConfiguration reloaded."
+  craft-enabled: "&aCrafting of units is enabled."
+  craft-disabled-status: "&cCrafting of units is disabled."
+  craft-disabled: "&cCrafting of units is disabled. Use /su give."
   list-header: "&6Units list (page {page})"
   list-empty: "&7No units on this page."

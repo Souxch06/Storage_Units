@@ -3,6 +3,7 @@ package fr.souxch06.storageunits.util;
 import fr.souxch06.storageunits.StorageUnits;
 import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.model.StorageLevel;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -45,6 +46,9 @@ public final class UnitItemFactory {
      * Construit l'item "Unité de stockage" pour un niveau donné.
      * <p>
      * L'item est tagué via le PDC pour pouvoir être reconnu lors du placement.
+     * Le nom et le lore sont construits à partir de la configuration ;
+     * les placeholders {@code {level}} et {@code {capacity}} sont
+     * automatiquement remplacés.
      * </p>
      */
     @NotNull
@@ -53,20 +57,27 @@ public final class UnitItemFactory {
         ItemMeta meta = stack.getItemMeta();
         if (meta == null) return stack;
 
-        // Nom et lore configurables
-        meta.displayName(ItemUtil.colorize(config.getUnitName()));
-
+        // Résolution de la capacité pour ce niveau
         StorageLevel sl = config.getLevel(level);
         long capacity = sl == null ? 0L : sl.getCapacity();
+        String capacityFmt = formatCapacity(capacity);
 
-        List<String> loreLines = new ArrayList<>(config.getUnitLore());
-        loreLines.add("");
-        loreLines.add("&7Niveau : &e" + level);
-        loreLines.add("&7Capacité : &e" + capacity);
-        loreLines.add("");
-        loreLines.add("&8Unité de stockage - Placez ce bloc");
-        loreLines.add("&8pour stocker des objets.");
-        meta.lore(ItemUtil.colorize(loreLines));
+        // Nom (avec remplacement des placeholders)
+        String nameRaw = config.getUnitName()
+                .replace("{level}", String.valueOf(level))
+                .replace("{capacity}", capacityFmt);
+        meta.displayName(ItemUtil.colorize(nameRaw));
+
+        // Lore (idem, placeholder par placeholder)
+        List<String> loreRaw = new ArrayList<>(config.getUnitLore());
+        List<Component> loreColored = new ArrayList<>(loreRaw.size());
+        for (String line : loreRaw) {
+            String lineResolved = line
+                    .replace("{level}", String.valueOf(level))
+                    .replace("{capacity}", capacityFmt);
+            loreColored.add(ItemUtil.colorize(lineResolved));
+        }
+        meta.lore(loreColored);
 
         if (config.isUnitGlowing()) {
             meta.addEnchant(Enchantment.UNBREAKING, 1, true);
@@ -83,6 +94,29 @@ public final class UnitItemFactory {
 
         stack.setItemMeta(meta);
         return stack;
+    }
+
+    /**
+     * Formate une capacité en chaîne lisible. Exemples :
+     * <ul>
+     *     <li>{@code 1000} → {@code "1 000"}</li>
+     *     <li>{@code 100000} → {@code "100 000"}</li>
+     *     <li>{@code 5000000} → {@code "5 000 000"}</li>
+     * </ul>
+     * Utilise des espaces fines (insécables) comme séparateurs de milliers
+     * pour rester lisible dans Minecraft.
+     */
+    @NotNull
+    private static String formatCapacity(long n) {
+        if (n < 1000) return String.valueOf(n);
+        StringBuilder sb = new StringBuilder();
+        String s = String.valueOf(n);
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            if (i > 0 && (len - i) % 3 == 0) sb.append('\u00A0'); // espace insécable
+            sb.append(s.charAt(i));
+        }
+        return sb.toString();
     }
 
     /**

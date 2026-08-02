@@ -22,10 +22,26 @@ import java.util.logging.Level;
 /**
  * Gestion des recettes de craft des unités de stockage.
  * <p>
- * Les recettes sont stockées dans {@code recipes.yml} et enregistrées dans
- * le registre de recettes du serveur. Désactiver une recette se fait en
- * supprimant la clé correspondante ou en mettant {@code enabled: false}.
+ * Les recettes sont stockées dans {@code recipes.yml}. <strong>Par défaut
+ * elles sont désactivées</strong> : c'est aux développeurs / admins du
+ * serveur de décider comment les joueurs obtiennent une unité (commande
+ * {@code /su give}, loot table, autre plugin...).
  * </p>
+ *
+ * <h2>Double sécurité</h2>
+ * <p>Une recette n'est enregistrée que si :</p>
+ * <ol>
+ *     <li>Le booléen global {@code craft.enabled} est à {@code true} dans
+ *         {@code config.yml} ;</li>
+ *     <li>ET la recette elle-même a {@code enabled: true} dans
+ *         {@code recipes.yml}.</li>
+ * </ol>
+ *
+ * <h2>Comportement si désactivé</h2>
+ * <p>Quand le craft est désactivé, le plugin appelle
+ * {@code Bukkit.removeRecipe(...)} pour s'assurer qu'aucune recette
+ * résiduelle portant le namespace du plugin ne traîne dans le registre
+ * (cas d'un admin qui ré-active puis re-désactive sans redémarrer).</p>
  */
 public final class RecipeConfig {
 
@@ -45,8 +61,27 @@ public final class RecipeConfig {
         this.config = YamlConfiguration.loadConfiguration(file);
     }
 
+    /**
+     * Enregistre toutes les recettes activées, ou les supprime si le
+     * craft est désactivé globalement.
+     */
     public void registerAll() {
         if (config == null) load();
+
+        // Booléen global dans config.yml : si false, AUCUNE recette n'est
+        // enregistrée, même celles qui seraient enabled:true dans recipes.yml.
+        boolean globalEnabled = plugin.getConfigManager().isCraftEnabled();
+
+        if (!globalEnabled) {
+            // Nettoyage préventif : on supprime toutes les recettes du plugin
+            // du registre Bukkit au cas où elles auraient été ajoutées
+            // avant un /su reload désactivant le craft.
+            purgeAll();
+            plugin.getLogger().info("Craft des unités désactivé dans config.yml (craft.enabled=false). "
+                    + "Aucune recette n'a été enregistrée.");
+            return;
+        }
+
         ConfigurationSection root = config.getConfigurationSection("recipes");
         if (root == null) return;
 
@@ -57,10 +92,24 @@ public final class RecipeConfig {
 
             try {
                 registerShaped(key, sec);
+                plugin.getLogger().info("Recette enregistrée : " + key);
             } catch (Exception ex) {
                 plugin.getLogger().log(Level.WARNING,
                         "Impossible d'enregistrer la recette '" + key + "'", ex);
             }
+        }
+    }
+
+    /**
+     * Supprime toutes les recettes appartenant à ce plugin du registre Bukkit.
+     */
+    private void purgeAll() {
+        if (config == null) return;
+        ConfigurationSection root = config.getConfigurationSection("recipes");
+        if (root == null) return;
+        for (String key : root.getKeys(false)) {
+            NamespacedKey nsKey = new NamespacedKey(plugin, "unit_" + key);
+            Bukkit.removeRecipe(nsKey);
         }
     }
 
