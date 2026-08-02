@@ -282,13 +282,11 @@ Si **Storage Units** vous est utile et que vous souhaitez soutenir son
 développement, vous pouvez faire un don via PayPal :
 
 <p align="center">
-  <a href="https://www.paypal.com/qrcodes/managed/d24efe01-b523-40db-a74f-66e172685100?utm_source=consapp_download">
-    <img src="docs/donations/paypal-qrcode.png" alt="QR code PayPal pour faire un don" width="280" />
-  </a>
+  <img src="docs/donations/paypal-qrcode.png" alt="QR code PayPal pour faire un don" width="280" />
 </p>
 
 <p align="center">
-  👉 <a href="https://www.paypal.com/qrcodes/managed/d24efe01-b523-40db-a74f-66e172685100?utm_source=consapp_download">Ouvrir la page PayPal pour faire un don</a> 👈
+  <em>Scannez le QR code avec l'application PayPal pour faire un don.</em>
 </p>
 
 Les dons sont **100 % facultatifs** et ne donnent droit à aucun avantage en jeu.
