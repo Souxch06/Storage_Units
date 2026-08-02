@@ -1,0 +1,88 @@
+# =====================================================================
+#  Storage Units - Configuration principale
+#  Plugin Paper / Purpur 1.21.11+ - Compatible Java et Bedrock
+# =====================================================================
+
+settings:
+  # Langue utilisée (fr, en, etc.). Doit correspondre à un fichier lang/<lang>.yml
+  language: "fr"
+  # Niveau donné par défaut aux nouvelles unités (commande /su give)
+  default-level: 1
+  # Nombre maximum d'objets déplaçables en une seule action de l'interface
+  max-stacks-per-click: 2304
+
+# ---------- Niveaux des unités ----------
+# Chaque niveau définit la capacité maximale d'une unité.
+# Le système est complètement extensible : ajoutez autant de niveaux que
+# vous le souhaitez, sans modifier le code du plugin.
+levels:
+  1:
+    capacity: 100000
+    display-name: "Niveau 1"
+  2:
+    capacity: 250000
+    display-name: "Niveau 2"
+  3:
+    capacity: 500000
+    display-name: "Niveau 3"
+  4:
+    capacity: 1000000
+    display-name: "Niveau 4"
+  5:
+    capacity: 5000000
+    display-name: "Niveau 5 (Légendaire)"
+
+# ---------- Apparence de l'item "Unité de stockage" ----------
+unit:
+  # Le bloc placé : CHEST (vanilla, visible identiquement par Java et Bedrock)
+  material: CHEST
+  # Nom affiché au-dessus de l'item (codes & couleur + hex #RRGGBB)
+  name: "&6&lUnité de stockage"
+  # Lore (description sous le nom)
+  lore:
+    - "&7Stocke une très grande quantité"
+    - "&7d'un seul type d'objet."
+    - ""
+    - "&eCompatible Java & Bedrock"
+  # Item enchanté (apparence brillante)
+  glowing: true
+  # CustomModelData. 0 = aucun. Mettez > 0 si vous utilisez un pack de
+  # ressources avec un modèle personnalisé.
+  custom-model-data: 0
+
+# ---------- Sons ----------
+# Toutes les clés sont facultatives. En cas d'erreur, un son par défaut
+# est utilisé.
+sounds:
+  open: BLOCK_CHEST_OPEN
+  close: BLOCK_CHEST_CLOSE
+  deposit: ENTITY_ITEM_PICKUP
+  withdraw: ENTITY_ITEM_PICKUP
+  upgrade: ENTITY_PLAYER_LEVELUP
+
+# ---------- Messages ----------
+# Utilisés par les commandes et l'interface. Les codes & couleur sont
+# supportés. Si une clé est absente, le plugin utilise une valeur par
+# défaut interne.
+messages:
+  placed: "&aVous avez placé une unité de stockage (niveau {level})."
+  already-here: "&cUne unité est déjà présente à cet emplacement."
+  no-permission: "&cVous n'avez pas la permission."
+  deposit: "&aVous avez déposé {amount} objet(s)."
+  deposit-failed: "&cVous ne pouvez rien déposer ici."
+  withdraw-all: "&aVous avez retiré {amount} objet(s)."
+  upgrade-success: "&aUnité améliorée au niveau {level} !"
+  upgrade-max: "&7Cette unité est au niveau maximum."
+  upgrade-too-full: "&cVidez l'unité avant de l'améliorer."
+  give-success: "&aVous avez donné une unité de niveau {level} à {player}."
+  give-received: "&aVous avez reçu une unité de stockage (niveau {level})."
+  specify-player: "&cSpécifiez un joueur."
+  player-not-found: "&cJoueur introuvable : {player}"
+  invalid-number: "&cNombre invalide : {value}"
+  invalid-level: "&cNiveau invalide : {level}"
+  reload-success: "&aConfiguration rechargée."
+  list-header: "&6Liste des unités (page {page})"
+  list-empty: "&7Aucune unité sur cette page."
+  status-units: "&7Unités chargées : &e{count}"
+  status-total: "&7Objets stockés : &e{total}"
+  status-capacity: "&7Capacité totale : &e{cap}"

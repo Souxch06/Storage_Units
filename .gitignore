@@ -1,0 +1,19 @@
+# Build
+target/
+*.class
+*.jar
+!target/dependency-reduced-pom.xml
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db

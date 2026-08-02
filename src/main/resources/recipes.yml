@@ -1,0 +1,33 @@
+# =====================================================================
+#  Recettes de craft des unités de stockage.
+#  Chaque recette utilise les matériaux du jeu et donne un ItemStack
+#  "Unité de stockage" tagué par le plugin.
+# =====================================================================
+
+recipes:
+  # Recette de base : 1 coffre + 4 lingots de fer => unité niveau 1
+  basic_chest:
+    enabled: true
+    level: 1
+    amount: 1
+    shape:
+      - "III"
+      - "ICI"
+      - "III"
+    ingredients:
+      I: IRON_INGOT
+      C: CHEST
+
+  # Recette avancée : unité niveau 2
+  advanced_chest:
+    enabled: true
+    level: 2
+    amount: 1
+    shape:
+      - "DGD"
+      - "DCD"
+      - "DGD"
+    ingredients:
+      D: DIAMOND
+      G: GOLD_INGOT
+      C: CHEST

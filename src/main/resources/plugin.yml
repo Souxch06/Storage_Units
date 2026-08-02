@@ -1,0 +1,48 @@
+name: StorageUnits
+version: '${project.version}'
+main: fr.souxch06.storageunits.bootstrap.StorageUnits
+api-version: '1.21'
+author: Souxch06
+description: Coffres "Unités de stockage" Paper/Purpur 1.21.11+ - compatible Java et Bedrock.
+website: https://github.com/Souxch06/Storage_Units
+softdepend: [ Geyser-Spigot, Floodgate ]
+
+# ---------- Commandes ----------
+commands:
+  storageunits:
+    aliases: [ su, storageunit ]
+    description: Commande principale du plugin Storage Units.
+    usage: |
+      /<command> give              - Donne une unité au joueur.
+      /<command> give <joueur>     - Donne une unité au joueur ciblé.
+      /<command> reload            - Recharge la configuration.
+      /<command> status            - Affiche le statut global.
+      /<command> list              - Liste les unités chargées.
+    permission: storageunits.use
+  storageunitsgive:
+    description: Donne une unité de stockage. Sous-commande.
+    usage: /<command> [joueur]
+    permission: storageunits.give
+  storageunitsreload:
+    description: Recharge la configuration du plugin.
+    usage: /<command>
+    permission: storageunits.admin
+  storageunitsstatus:
+    description: Affiche le statut global (unités, capacité, etc.).
+    usage: /<command>
+    permission: storageunits.use
+
+# ---------- Permissions ----------
+permissions:
+  storageunits.use:
+    description: Autorise l'utilisation des unités de stockage (déposer / retirer).
+    default: true
+  storageunits.give:
+    description: Autorise la commande /storageunits give.
+    default: op
+  storageunits.admin:
+    description: Autorise la commande /storageunits reload.
+    default: op
+  storageunits.upgrade:
+    description: Autorise l'amélioration d'une unité de stockage.
+    default: true
