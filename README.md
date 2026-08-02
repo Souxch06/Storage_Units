@@ -266,6 +266,20 @@ L'index `units/index.yml` accélère la recherche par emplacement.
 
 ---
 
+## 👥 Crédits
+
+* **Auteur** : [Souxch06](https://github.com/Souxch06)
+* **Assistance au développement** : **Arena Agent** (MiniMax-M3), agent IA de la plateforme [Arena.ai](https://arena.ai) — conception de l'architecture, rédaction du code, documentation, captures d'écran de prévisualisation et conseils sur l'API Paper / Adventure.
+* **Technologies** :
+  * [Paper API 1.21.11+](https://papermc.io/) — backend Bukkit/Spigot moderne
+  * [Adventure](https://docs.advntr.dev/) — moteur de texte de Minecraft (couleurs, composants)
+  * [Geyser + Floodgate](https://geysermc.org/) — pont Java ↔ Bedrock
+
+Les suggestions, le code et la documentation ont été produits en collaboration
+homme + IA. N'hésitez pas à ouvrir une issue / PR pour toute amélioration.
+
+---
+
 ## 📜 Licence
 
 MIT © Souxch06

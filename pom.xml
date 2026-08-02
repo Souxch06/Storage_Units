@@ -23,6 +23,16 @@
         un seul type d'item en grande quantité. Compatible Java et Bedrock (Geyser/Floodgate).</description>
     <url>https://github.com/Souxch06/Storage_Units</url>
 
+    <organization>
+        <name>Souxch06</name>
+        <url>https://github.com/Souxch06</url>
+    </organization>
+
+    <!--
+        Assistance au développement fournie par Arena Agent (MiniMax-M3),
+        agent IA de la plateforme Arena.ai.
+    -->
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>

@@ -3,6 +3,7 @@ version: '${project.version}'
 main: fr.souxch06.storageunits.bootstrap.StorageUnits
 api-version: '1.21'
 author: Souxch06
+authors: [ Souxch06, Arena Agent (MiniMax-M3) ]
 description: Coffres "Unités de stockage" Paper/Purpur 1.21.11+ - compatible Java et Bedrock.
 website: https://github.com/Souxch06/Storage_Units
 softdepend: [ Geyser-Spigot, Floodgate ]
