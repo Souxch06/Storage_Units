@@ -3,7 +3,6 @@ package fr.souxch06.storageunits.util;
 import fr.souxch06.storageunits.StorageUnits;
 import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.model.StorageLevel;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;

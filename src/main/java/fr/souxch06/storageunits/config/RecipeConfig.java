@@ -93,7 +93,7 @@ public final class RecipeConfig {
             }
             String matName = ingredients.getString(letter);
             if (matName == null) continue;
-            Material material = Material.matchMaterial(matName.toUpperCase());
+            Material material = Material.matchMaterial(matName.toUpperCase(), true);
             if (material == null) {
                 plugin.getLogger().warning("Ingrédient inconnu dans la recette " + id
                         + " : " + matName);

@@ -5,9 +5,25 @@ Une unité ne stocke qu'**un seul type d'item** à la fois, mais en très grande
 (plusieurs millions possible). Compatible avec les joueurs **Java** et **Bedrock**
 passant par Geyser/Floodgate, car :
 
-* le bloc placé est un vrai `CHEST` vanilla, visible de la même manière des deux côtés ;
+* le bloc posé est un vrai `CHEST` vanilla, visible de la même manière des deux côtés ;
 * l'interface graphique est une `Inventory` Bukkit standard, rendue nativement par les deux clients ;
 * tous les textes utilisent **Adventure**, supporté identiquement par les deux pipelines.
+
+---
+
+## 📸 Aperçu visuel
+
+### L'item « Unité de stockage » dans l'inventaire
+![Item Unité de stockage](docs/screenshots/01-item-inventory.png)
+
+### Le bloc coffre placé dans le monde
+![Bloc coffre dans le monde](docs/screenshots/02-block-world.png)
+
+### L'interface — unité vide (Niveau 1)
+![Interface unité vide](docs/screenshots/03-gui-empty.png)
+
+### L'interface — unité remplie (Niveau 3, 347 250 / 500 000 diamants)
+![Interface unité remplie](docs/screenshots/04-gui-filled.png)
 
 ---
 
@@ -31,7 +47,7 @@ fr.souxch06.storageunits
 │   ├── StorageUnitsApi
 │   └── StorageUnitSnapshot
 ├── bootstrap
-│   └── StorageUnitsPlugin    Classe principale (onEnable / onDisable)
+│   └── StorageUnits          Classe principale (onEnable / onDisable)
 ├── commands
 │   └── StorageUnitCommand    /su, /storageunits
 ├── config

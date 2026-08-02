@@ -17,3 +17,12 @@ target/
 # OS
 .DS_Store
 Thumbs.db
+
+# Backups / temp
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# Cache de génération d'images / previews
+renders-tmp/
