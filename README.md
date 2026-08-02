@@ -276,6 +276,27 @@ L'index `units/index.yml` accélère la recherche par emplacement.
 
 ---
 
+## 💝 Soutenir le projet
+
+Si **Storage Units** vous est utile et que vous souhaitez soutenir son
+développement, vous pouvez faire un don via PayPal :
+
+<p align="center">
+  <a href="https://www.paypal.com/qrcodes/managed/d24efe01-b523-40db-a74f-66e172685100?utm_source=consapp_download">
+    <img src="docs/donations/paypal-qrcode.png" alt="QR code PayPal pour faire un don" width="280" />
+  </a>
+</p>
+
+<p align="center">
+  👉 <a href="https://www.paypal.com/qrcodes/managed/d24efe01-b523-40db-a74f-66e172685100?utm_source=consapp_download">Ouvrir la page PayPal pour faire un don</a> 👈
+</p>
+
+Les dons sont **100 % facultatifs** et ne donnent droit à aucun avantage en jeu.
+Ils servent uniquement à soutenir la maintenance et l'ajout de nouvelles
+fonctionnalités. Merci à tous les contributeurs et donateurs ! 🙏
+
+---
+
 ## 👥 Crédits
 
 * **Auteur** : [Souxch06](https://github.com/Souxch06)
