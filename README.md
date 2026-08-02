@@ -22,7 +22,7 @@ passant par Geyser/Floodgate, car :
 ### L'interface — unité vide (Niveau 1)
 ![Interface unité vide](docs/screenshots/03-gui-empty.png)
 
-### L'interface — unité remplie (Niveau 3, 347 250 / 500 000 diamants)
+### L'interface — unité remplie (Niveau 4 : 347 250 / 500 000 diamants)
 ![Interface unité remplie](docs/screenshots/04-gui-filled.png)
 
 ---
