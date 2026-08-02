@@ -1,0 +1,30 @@
+# CODEOWNERS — revue de code obligatoire
+#
+# Ce fichier désigne les propriétaires du code : toute Pull Request
+# touchant aux fichiers listés ci-dessous NECESSITE leur approbation
+# avant d'être mergée (une fois la protection de branche activée).
+#
+# Format : un propriétaire par ligne, suivi d'un ou plusieurs patterns.
+# Le DERNIER pattern qui matche l'emporte (comme dans .gitignore).
+#
+# Le bot GitHub ne compte pas comme un propriétaire "humain" : il faut
+# au minimum Souxch06 pour valider les changements.
+
+# Propriétaire par défaut pour tout le repo
+*       @Souxch06
+
+# Les fichiers sensibles (config, build, GitHub workflows) exigent
+# une double revue.
+/.github/    @Souxch06
+/pom.xml     @Souxch06
+/plugin.yml  @Souxch06
+*.yml        @Souxch06
+*.yaml       @Souxch06
+
+# Le code Java est revu par Souxch06.
+/src/        @Souxch06
+
+# La documentation peut être éditée librement (commentaires, README).
+# Décommentez la ligne ci-dessous pour exiger quand même une revue :
+# /docs/      @Souxch06
+# /README.md  @Souxch06

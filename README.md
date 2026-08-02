@@ -256,6 +256,16 @@ L'index `units/index.yml` accélère la recherche par emplacement.
 
 ---
 
+## 🛡️ Sécurité & contribution
+
+* 📋 [`CONTRIBUTING.md`](CONTRIBUTING.md) — guide pour proposer une PR
+* 🔒 [`SECURITY.md`](SECURITY.md) — signaler une vulnérabilité
+* 🪪 [`CODEOWNERS`](CODEOWNERS) — qui doit approuver les changements
+* ⚙️ [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — CI Maven automatique
+* 🛡️ [`docs/SECURITY_SETUP.md`](docs/SECURITY_SETUP.md) — checklist pour activer
+  la protection de branche sur GitHub (à faire en 1 minute)
+* 📜 [`LICENSE`](LICENSE) — licence MIT explicite
+
 ## 🛠️ Extensibilité
 
 * **Nouveau comportement** : créez une classe dans `manager/` et appelez-la
