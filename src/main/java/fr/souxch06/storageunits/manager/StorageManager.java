@@ -158,19 +158,39 @@ public final class StorageManager {
         if (sl.getCapacity() < unit.getAmount()) return false;
         unit.setLevel(nextLevel);
         repository.save(unit);
+        updateBlockTitle(unit);
         return true;
+    }
+
+    /**
+     * Retourne le titre affiché pour l'interface de l'unité.
+     */
+    @NotNull
+    public String getGuiTitle(@NotNull StorageUnit unit) {
+        StorageLevel level = config.getLevel(unit.getLevel());
+        String levelName = level == null ? String.valueOf(unit.getLevel()) : level.getDisplayName();
+        String title = plugin.getLanguageManager().get("gui.title", "Unité de stockage")
+                + " - " + levelName;
+        return title.replace("&", "§");
+    }
+
+    /**
+     * Met à jour le titre du coffre posé afin qu'il reflète immédiatement le niveau
+     * de l'unité, y compris lorsqu'elle est améliorée alors que son interface est ouverte.
+     */
+    private void updateBlockTitle(@NotNull StorageUnit unit) {
+        Block block = unit.getLocation().getBlock();
+        if (!(block.getState() instanceof Chest chest)) return;
+
+        // Renommage legacy pour éviter le bug d'affichage Adventure toString().
+        chest.setCustomName(getGuiTitle(unit));
+        chest.update();
     }
 
     public void openGui(@NotNull Player player, @NotNull StorageUnit unit) {
         Block block = unit.getLocation().getBlock();
         if (block.getState() instanceof Chest chest) {
-            // Création du titre propre pour l'interface
-            String title = plugin.getLanguageManager().get("gui.title", "Unité de stockage") 
-                + " - " + config.getLevel(unit.getLevel()).getDisplayName();
-            
-            // Renommage legacy pour éviter le bug d'affichage Adventure toString()
-            chest.setCustomName(title.replace("&", "§"));
-            chest.update();
+            updateBlockTitle(unit);
 
             // Ouverture de l'interface liée au bloc pour l'animation native
             StorageGui gui = new StorageGui(plugin, this, unit, chest.getInventory());

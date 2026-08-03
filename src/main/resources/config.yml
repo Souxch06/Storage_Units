@@ -30,7 +30,7 @@ levels:
     display-name: "Niveau 4"
   5:
     capacity: 131072
-    display-name: "Niveau 5 (Légendaire)"
+    display-name: "Niveau 5"
 
 # ---------- Apparence de l'item "Unité de stockage" ----------
 #
