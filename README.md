@@ -1,56 +1,56 @@
 # Storage Units
 
-Plugin **Paper / Purpur 1.21.11+** (Java 21) qui ajoute des coffres « Unités de stockage ».
-Une unité ne stocke qu'**un seul type d'item** à la fois, mais en très grande quantité
-(plusieurs millions possible). Compatible avec les joueurs **Java** et **Bedrock**
-passant par Geyser/Floodgate, car :
+A **Paper / Purpur 1.21.11+** plugin (Java 21) that adds "Storage Unit" chests.
+A unit stores only **a single item type** at a time, but in very large quantities
+(several million possible). Compatible with both **Java** and **Bedrock** players
+connecting through Geyser/Floodgate, because:
 
-* le bloc posé est un vrai `CHEST` vanilla, visible de la même manière des deux côtés ;
-* l'interface graphique est une `Inventory` Bukkit standard, rendue nativement par les deux clients ;
-* tous les textes utilisent **Adventure**, supporté identiquement par les deux pipelines.
+* the placed block is a real vanilla `CHEST`, displayed identically on both sides;
+* the graphical interface is a standard Bukkit `Inventory`, rendered natively by both clients;
+* all text uses **Adventure**, supported identically by both pipelines.
 
-## 📥 Téléchargement
+## 📥 Download
 
-**Dernière release stable : v1.0.0**
+**Latest stable release: v1.0.0**
 
-- 🔗 **Page des releases** : https://github.com/Souxch06/Storage_Units/releases
-- 📦 **Téléchargement direct du JAR** : [StorageUnits-1.0.0.jar](https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageUnits-1.0.0.jar)
+- 🔗 **Releases page**: https://github.com/Souxch06/Storage_Units/releases
+- 📦 **Direct JAR download**: [StorageUnits-1.0.0.jar](https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageUnits-1.0.0.jar)
 
 ```bash
 wget https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageUnits-1.0.0.jar -O plugins/StorageUnits-1.0.0.jar
 ```
 
-> ✅ JAR compilé automatiquement via GitHub Actions (Java 21, Paper API 1.21.11+). Vérifiez toujours que vous téléchargez depuis la page officielle des releases.
+> ✅ JAR automatically built via GitHub Actions (Java 21, Paper API 1.21.11+). Always make sure you download from the official releases page.
 
 ---
 
-## 📸 Aperçu visuel
+## 📸 Visual preview
 
-### L'item « Unité de stockage » dans l'inventaire
-![Item Unité de stockage](docs/screenshots/01-item-inventory.png)
+### The "Storage Unit" item in the inventory
+![Storage Unit item](docs/screenshots/01-item-inventory.png)
 
-### Le bloc coffre placé dans le monde
-![Bloc coffre dans le monde](docs/screenshots/02-block-world.png)
+### The chest block placed in the world
+![Chest block in the world](docs/screenshots/02-block-world.png)
 
-### L'interface — unité vide (Niveau 1)
-![Interface unité vide](docs/screenshots/03-gui-empty.png)
+### The interface — empty unit (Level 1)
+![Empty unit interface](docs/screenshots/03-gui-empty.png)
 
-### L'interface — unité remplie
-![Interface unité remplie](docs/screenshots/04-gui-filled.png)
+### The interface — filled unit
+![Filled unit interface](docs/screenshots/04-gui-filled.png)
 
 ---
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-* 📦 Bloc coffre custom — Un seul type d'item à la fois
-* 📈 Système d'**amélioration par niveau** (1 → 5+ configurable)
-* 💾 Persistance YAML (un fichier par unité + un index)
-* 🔌 API publique (pour d'autres plugins)
-* ⚙️ 100 % configurable (capacités, items, sons, recettes, messages)
-* 🔊 Sons Minecraft vanilla (configurables)
-* 🧰 Recettes de craft configurables (YAML) — **désactivées par défaut**
-* 🪪 Item clairement identifiable dans l'inventaire (nom « ✦ Unité de stockage » + lore + glow + tag PDC) — **distinct d'un coffre vanilla**
-* 🌐 Bloc posé = coffre vanilla, donc **identique sur Java & Bedrock**
+* 📦 Custom chest block — only one item type at a time
+* 📈 **Level-based upgrade** system (1 → 5+ configurable)
+* 💾 YAML persistence (one file per unit + an index)
+* 🔌 Public API (for other plugins)
+* ⚙️ 100 % configurable (capacities, items, sounds, recipes, messages)
+* 🔊 Vanilla Minecraft sounds (configurable)
+* 🧰 Configurable crafting recipes (YAML) — **disabled by default**
+* 🪪 Clearly identifiable item in the inventory (name "✦ Storage Unit" + lore + glow + PDC tag) — **distinct from a vanilla chest**
+* 🌐 Placed block = vanilla chest, so **identical on Java & Bedrock**
 
 ---
 
@@ -58,11 +58,11 @@ wget https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageU
 
 ```
 fr.souxch06.storageunits
-├── api                       API publique (pour plugins tiers)
+├── api                       Public API (for third-party plugins)
 │   ├── StorageUnitsApi
 │   └── StorageUnitSnapshot
 ├── bootstrap
-│   └── StorageUnits          Classe principale (onEnable / onDisable)
+│   └── StorageUnits          Main class (onEnable / onDisable)
 ├── commands
 │   └── StorageUnitCommand    /su, /storageunits
 ├── config
@@ -70,81 +70,81 @@ fr.souxch06.storageunits
 │   ├── LanguageManager       lang/*.yml
 │   └── RecipeConfig          recipes.yml
 ├── data
-│   └── StorageRepository     YAML par unité
+│   └── StorageRepository     YAML per unit
 ├── gui
-│   └── StorageGui            Inventaire 27 cases
+│   └── StorageGui            27-slot inventory
 ├── listeners
-│   ├── UnitBlockListener     Casse, piston, explosion
-│   ├── UnitInteractionListener  Clic droit + GUI
-│   └── UnitItemListener      Placement de l'item
+│   ├── UnitBlockListener     Breaking, piston, explosion
+│   ├── UnitInteractionListener  Right-click + GUI
+│   └── UnitItemListener      Placing the item
 ├── manager
-│   └── StorageManager        Logique métier
+│   └── StorageManager        Business logic
 ├── model
-│   ├── StorageLevel          Niveau d'unité (capacité)
-│   └── StorageUnit           Modèle de l'unité
+│   ├── StorageLevel          Unit level (capacity)
+│   └── StorageUnit           Unit model
 └── util
-    ├── ItemUtil              Couleurs Adventure, names
+    ├── ItemUtil              Adventure colors, names
     ├── PluginKeys            NamespacedKeys
-    └── UnitItemFactory       Fabrique d'item
+    └── UnitItemFactory       Item factory
 ```
 
 ---
 
-## 🚀 Compilation
+## 🚀 Building
 
 ```bash
 mvn clean package
 ```
 
-Le jar prêt à l'emploi est dans `target/StorageUnits-1.0.0.jar`.
+The ready-to-use jar is in `target/StorageUnits-1.0.0.jar`.
 
-> 💡 Vous pouvez aussi récupérer le JAR déjà compilé depuis la [dernière release](https://github.com/Souxch06/Storage_Units/releases/latest) :
+> 💡 You can also grab the prebuilt JAR from the [latest release](https://github.com/Souxch06/Storage_Units/releases/latest):
 > https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageUnits-1.0.0.jar
 
 ---
 
 ## 📥 Installation
 
-1. Copier le jar dans `plugins/` de votre serveur **Paper 1.21.11+** ou **Purpur 1.21.11+**.
-2. Redémarrer le serveur.
-3. Les fichiers `config.yml`, `lang/fr.yml`, `recipes.yml` sont générés dans `plugins/StorageUnits/`.
+1. Copy the jar into the `plugins/` folder of your **Paper 1.21.11+** or **Purpur 1.21.11+** server.
+2. Restart the server.
+3. The files `config.yml`, `lang/fr.yml`, `recipes.yml` are generated in `plugins/StorageUnits/`.
 
-### Mise à jour
+### Updating
 
-1. Arrêtez le serveur.
-2. Remplacez le jar existant dans `plugins/` par la nouvelle version.
-3. Redémarrez le serveur.
+1. Stop the server.
+2. Replace the existing jar in `plugins/` with the new version.
+3. Restart the server.
 
-> ⚠️ **Ne supprimez pas `plugins/StorageUnits/` pendant une mise à jour.** Ce dossier contient
-> votre configuration ainsi que les données persistantes de vos unités dans `units/`.
+> ⚠️ **Do not delete `plugins/StorageUnits/` while updating.** This folder holds
+> your configuration as well as the persistent data of your units in `units/`.
 
 ---
 
-## 🎮 Utilisation
+## 🎮 Usage
 
-| Commande | Description | Permission |
+| Command | Description | Permission |
 |---|---|---|
-| `/su give` | Donne une unité au joueur courant. | `storageunits.give` |
-| `/su give <joueur> [niveau]` | Donne une unité à un joueur. | `storageunits.give` |
-| `/su status` | Affiche le statut global. | `storageunits.use` |
-| `/su list [page]` | Liste les unités chargées. | `storageunits.use` |
-| `/su craft` | Affiche l'état du système de craft. | `storageunits.use` |
-| `/su reload` | Recharge la configuration. | `storageunits.admin` |
+| `/su give` | Gives a unit to the current player. | `storageunits.give` |
+| `/su give <player> [level]` | Gives a unit to a player. | `storageunits.give` |
+| `/su status` | Shows the global status. | `storageunits.use` |
+| `/su list [page]` | Lists the loaded units. | `storageunits.use` |
+| `/su craft` | Shows the crafting system status. | `storageunits.use` |
+| `/su reload` | Reloads the configuration. | `storageunits.admin` |
 
-**Placez** ensuite l'item coffre reçu. Un coffre vanilla est posé et marqué
-via le PDC. **Clic droit** sur le coffre pour ouvrir l'interface :
+Then **place** the chest item you received. A vanilla chest is placed and tagged
+through the PDC. **Right-click** the chest to open the interface:
 
-* 🟩 Déposer : vide l'inventaire du joueur des items compatibles dans l'unité
-* 🟥 Retirer : retire 1 stack (ou tout avec Shift)
-* 🟪 Améliorer : passe au niveau supérieur (si configuré)
+* 🟩 Deposit: empties the player's inventory of compatible items into the unit
+* 🟥 Withdraw: takes out 1 stack (or everything with Shift)
+* 🟪 Upgrade: moves to the next level (if configured)
 
-> 🪪 **Comment reconnaître une unité d'un coffre vanilla ?**
-> L'item « ✦ Unité de stockage » se distingue par :
-> - son **nom en or gras** avec le préfixe `✦`
-> - son **lore** mentionnant « Storage Units » et la capacité
-> - l'**effet brillant** (enchantement invisible)
-> - le **tag PDC** `storageunits:unit_item` (côté serveur)
-> Le bloc posé reste un coffre vanilla, pour rester visible à l'identique par Java et Bedrock.
+> 🪪 **How to tell a unit apart from a vanilla chest?**
+> The "✦ Storage Unit" item stands out thanks to:
+> - its **bold golden name** with the `✦` prefix
+> - its **lore** mentioning "Storage Units" and the capacity
+> - the **glowing effect** (invisible enchantment)
+> - the **PDC tag** `storageunits:unit_item` (server side)
+> The placed block remains a vanilla chest, to stay visually identical for both Java and Bedrock.
 
 ---
 
@@ -152,23 +152,23 @@ via le PDC. **Clic droit** sur le coffre pour ouvrir l'interface :
 
 ```yaml
 settings:
-  language: "fr"
+  language: "en"
   default-level: 1
   max-stacks-per-click: 2304
 
 levels:
-  1: { capacity: 512,    display-name: "Niveau 1" }
-  2: { capacity: 2048,   display-name: "Niveau 2" }
-  3: { capacity: 8192,   display-name: "Niveau 3" }
-  4: { capacity: 32768,  display-name: "Niveau 4" }
-  5: { capacity: 131072, display-name: "Niveau 5" }
+  1: { capacity: 512,    display-name: "Level 1" }
+  2: { capacity: 2048,   display-name: "Level 2" }
+  3: { capacity: 8192,   display-name: "Level 3" }
+  4: { capacity: 32768,  display-name: "Level 4" }
+  5: { capacity: 131072, display-name: "Level 5" }
 
 unit:
   material: CHEST
-  name: "&6&lUnité de stockage"
+  name: "&6&lStorage Unit"
   lore:
-    - "&7Stocke une très grande quantité"
-    - "&7d'un seul type d'objet."
+    - "&7Stores a very large quantity"
+    - "&7of a single item type."
   glowing: true
   custom-model-data: 0
 
@@ -180,39 +180,39 @@ sounds:
   upgrade: ENTITY_PLAYER_LEVELUP
 ```
 
-### Ajouter un niveau
+### Adding a level
 
-Il suffit d'ajouter une entrée dans `levels:` — **aucune modification de code n'est nécessaire** :
+Simply add an entry under `levels:` — **no code change is required**:
 
 ```yaml
 levels:
   6:
     capacity: 25000000
-    display-name: "Niveau 6 (Divin)"
+    display-name: "Level 6 (Divine)"
 ```
 
-### Recettes (`recipes.yml`)
+### Recipes (`recipes.yml`)
 
-**⚠️ Le craft est DÉSACTIVÉ PAR DÉFAUT** (config.yml → `craft.enabled: false`
-et toutes les recettes du `recipes.yml` sont aussi à `enabled: false`).
-Les développeurs / admins sont libres d'activer / désactiver / créer
-les recettes qu'ils souhaitent.
+**⚠️ Crafting is DISABLED BY DEFAULT** (config.yml → `craft.enabled: false`
+and every recipe in `recipes.yml` is also set to `enabled: false`).
+Developers / admins are free to enable / disable / create whatever
+recipes they want.
 
-Pour activer le craft :
+To enable crafting:
 
-1. Dans `config.yml` : passer `craft.enabled` à `true`.
-2. Dans `recipes.yml` : passer la recette voulue à `enabled: true`.
-3. `/su reload` (ou redémarrer le serveur).
+1. In `config.yml`: set `craft.enabled` to `true`.
+2. In `recipes.yml`: set the desired recipe to `enabled: true`.
+3. Run `/su reload` (or restart the server).
 
 ```yaml
 # config.yml
 craft:
-  enabled: true   # <- passer à true
+  enabled: true   # <- set to true
 
 # recipes.yml
 recipes:
   basic_chest:
-    enabled: true   # <- passer à true
+    enabled: true   # <- set to true
     level: 1
     amount: 1
     shape:
@@ -226,7 +226,7 @@ recipes:
 
 ---
 
-## 🔌 API publique
+## 🔌 Public API
 
 ```java
 import fr.souxch06.storageunits.api.StorageUnitsApi;
@@ -234,25 +234,25 @@ import fr.souxch06.storageunits.api.StorageUnitSnapshot;
 
 StorageUnitsApi api = StorageUnitsApi.get();
 if (api != null) {
-    // Créer une unité à un emplacement
+    // Create a unit at a location
     java.util.UUID id = api.createUnit(loc, 1, player.getUniqueId());
 
-    // Déposer / retirer
+    // Deposit / withdraw
     api.deposit(id, itemStack);
     api.withdraw(id, player, 64);
 
-    // Lister
+    // List
     for (StorageUnitSnapshot s : api.listAll()) {
-        plugin.getLogger().info("Unité " + s.id() + " -> " + s.amount());
+        plugin.getLogger().info("Unit " + s.id() + " -> " + s.amount());
     }
 }
 ```
 
 ---
 
-## 💾 Persistance
+## 💾 Persistence
 
-Les unités sont stockées dans `plugins/StorageUnits/units/<uuid>.yml` :
+Units are stored in `plugins/StorageUnits/units/<uuid>.yml`:
 
 ```yaml
 id: 1a2b3c4d-...
@@ -267,73 +267,73 @@ material: DIAMOND
 template: {...}
 ```
 
-L'index `units/index.yml` accélère la recherche par emplacement.
+The index `units/index.yml` speeds up lookups by location.
 
 ---
 
-## 🌐 Compatibilité
+## 🌐 Compatibility
 
-* **Serveur** : Paper 1.21.11+ / Purpur 1.21.11+ (API Bukkit + Paper + Adventure)
-* **Java** : 21
-* **Clients** : Minecraft Java Edition **et** Minecraft Bedrock (Geyser + Floodgate)
-* Les upgrades du plugin ciblent l'API moderne ; le code évite les méthodes
-  dépréciées de Bukkit et utilise Adventure pour le texte.
-
----
-
-## 🛡️ Sécurité & contribution
-
-* 📋 [`CONTRIBUTING.md`](CONTRIBUTING.md) — guide pour proposer une PR
-* 🔒 [`SECURITY.md`](SECURITY.md) — signaler une vulnérabilité
-* 🪪 [`CODEOWNERS`](CODEOWNERS) — qui doit approuver les changements
-* ⚙️ [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — CI Maven automatique
-* 🛡️ [`docs/SECURITY_SETUP.md`](docs/SECURITY_SETUP.md) — checklist pour activer
-  la protection de branche sur GitHub (à faire en 1 minute)
-* 📜 [`LICENSE`](LICENSE) — licence MIT explicite
-
-## 🛠️ Extensibilité
-
-* **Nouveau comportement** : créez une classe dans `manager/` et appelez-la
-  depuis le listener / GUI existant.
-* **Nouvelles clés de config** : ajoutez-les à `ConfigManager` (lecture et cache).
-* **Nouvelles traductions** : copiez `lang/fr.yml` → `lang/xx.yml` et traduisez.
-* **Nouvelles recettes** : ajoutez une entrée dans `recipes.yml`.
+* **Server**: Paper 1.21.11+ / Purpur 1.21.11+ (Bukkit + Paper + Adventure API)
+* **Java**: 21
+* **Clients**: Minecraft Java Edition **and** Minecraft Bedrock (Geyser + Floodgate)
+* The plugin's upgrades target the modern API; the code avoids deprecated
+  Bukkit methods and uses Adventure for text.
 
 ---
 
-## 💝 Soutenir le projet
+## 🛡️ Security & contributing
 
-Si **Storage Units** vous est utile et que vous souhaitez soutenir son
-développement, vous pouvez faire un don via PayPal :
+* 📋 [`CONTRIBUTING.md`](CONTRIBUTING.md) — guide for submitting a PR
+* 🔒 [`SECURITY.md`](SECURITY.md) — report a vulnerability
+* 🪪 [`CODEOWNERS`](CODEOWNERS) — who must approve changes
+* ⚙️ [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — automatic Maven CI
+* 🛡️ [`docs/SECURITY_SETUP.md`](docs/SECURITY_SETUP.md) — checklist to enable
+  branch protection on GitHub (takes about 1 minute)
+* 📜 [`LICENSE`](LICENSE) — explicit MIT license
+
+## 🛠️ Extensibility
+
+* **New behavior**: create a class in `manager/` and call it from the existing
+  listener / GUI.
+* **New config keys**: add them to `ConfigManager` (read and cache).
+* **New translations**: copy `lang/fr.yml` → `lang/xx.yml` and translate it.
+* **New recipes**: add an entry in `recipes.yml`.
+
+---
+
+## 💝 Supporting the project
+
+If **Storage Units** is useful to you and you'd like to support its
+development, you can make a donation via PayPal:
 
 <p align="center">
-  <img src="docs/donations/paypal-qrcode.png" alt="QR code PayPal pour faire un don" width="280" />
+  <img src="docs/donations/paypal-qrcode.png" alt="PayPal QR code to make a donation" width="280" />
 </p>
 
 <p align="center">
-  <em>Scannez le QR code avec l'application PayPal pour faire un don.</em>
+  <em>Scan the QR code with the PayPal app to make a donation.</em>
 </p>
 
-Les dons sont **100 % facultatifs** et ne donnent droit à aucun avantage en jeu.
-Ils servent uniquement à soutenir la maintenance et l'ajout de nouvelles
-fonctionnalités. Merci à tous les contributeurs et donateurs ! 🙏
+Donations are **100 % optional** and grant no in-game advantage.
+They are solely used to support maintenance and the addition of new
+features. Thanks to all contributors and donors! 🙏
 
 ---
 
-## 👥 Crédits
+## 👥 Credits
 
-* **Auteur** : [Souxch06](https://github.com/Souxch06)
-* **Assistance au développement** : **Arena Agent** (MiniMax-M3), agent IA de la plateforme [Arena.ai](https://arena.ai) — conception de l'architecture, rédaction du code, documentation, captures d'écran de prévisualisation et conseils sur l'API Paper / Adventure.
-* **Technologies** :
-  * [Paper API 1.21.11+](https://papermc.io/) — backend Bukkit/Spigot moderne
-  * [Adventure](https://docs.advntr.dev/) — moteur de texte de Minecraft (couleurs, composants)
-  * [Geyser + Floodgate](https://geysermc.org/) — pont Java ↔ Bedrock
+* **Author**: [Souxch06](https://github.com/Souxch06)
+* **Development assistance**: **Arena Agent** (MiniMax-M3), the AI agent of the [Arena.ai](https://arena.ai) platform — architecture design, code writing, documentation, preview screenshots, and advice on the Paper / Adventure API.
+* **Technologies**:
+  * [Paper API 1.21.11+](https://papermc.io/) — modern Bukkit/Spigot backend
+  * [Adventure](https://docs.advntr.dev/) — Minecraft's text engine (colors, components)
+  * [Geyser + Floodgate](https://geysermc.org/) — Java ↔ Bedrock bridge
 
-Les suggestions, le code et la documentation ont été produits en collaboration
-homme + IA. N'hésitez pas à ouvrir une issue / PR pour toute amélioration.
+Suggestions, code, and documentation were produced through human + AI
+collaboration. Feel free to open an issue / PR for any improvement.
 
 ---
 
-## 📜 Licence
+## 📜 License
 
 MIT © Souxch06
