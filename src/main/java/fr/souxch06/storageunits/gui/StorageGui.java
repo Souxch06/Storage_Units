@@ -372,6 +372,9 @@ public final class StorageGui implements InventoryHolder {
             return;
         }
         if (manager.upgrade(unit)) {
+            // Le titre de la fenêtre est envoyé au client séparément du contenu :
+            // le mettre à jour ici évite de devoir fermer puis rouvrir l'unité.
+            player.getOpenInventory().setTitle(manager.getGuiTitle(unit));
             playSound(player, config().getSound("upgrade"));
             player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                     "msg.upgrade-success", "&aUnité améliorée au niveau {level} !")

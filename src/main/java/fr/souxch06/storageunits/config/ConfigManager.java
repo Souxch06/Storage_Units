@@ -84,6 +84,7 @@ public final class ConfigManager {
         }
         plugin.reloadConfig();
         this.config = plugin.getConfig();
+        migrateLegacyLevelFiveName();
 
         // Lecture des niveaux
         levels.clear();
@@ -113,6 +114,20 @@ public final class ConfigManager {
         this.defaultLevel = config.getInt("settings.default-level", 1);
         this.maxStacksPerClick = config.getInt("settings.max-stacks-per-click", 2304);
         this.craftEnabled = config.getBoolean("craft.enabled", false);
+    }
+
+    /**
+     * Met à jour l'ancienne valeur distribuée pour le niveau 5. Les installations
+     * existantes gardent leur config.yml : sans cette migration, l'ancien libellé
+     * continuerait donc à apparaître dans le chat et l'interface après une mise à jour.
+     */
+    private void migrateLegacyLevelFiveName() {
+        String path = "levels.5.display-name";
+        String legacyName = "Niveau 5 (L\u00e9" + "gendaire)";
+        if (legacyName.equals(config.getString(path))) {
+            config.set(path, "Niveau 5");
+            save();
+        }
     }
 
     private void loadDefaultLevels() {

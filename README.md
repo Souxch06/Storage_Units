@@ -136,7 +136,7 @@ levels:
   2: { capacity: 250000,  display-name: "Niveau 2" }
   3: { capacity: 500000,  display-name: "Niveau 3" }
   4: { capacity: 1000000, display-name: "Niveau 4" }
-  5: { capacity: 5000000, display-name: "Niveau 5 (Légendaire)" }
+  5: { capacity: 5000000, display-name: "Niveau 5" }
 
 unit:
   material: CHEST
