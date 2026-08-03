@@ -9,6 +9,19 @@ passant par Geyser/Floodgate, car :
 * l'interface graphique est une `Inventory` Bukkit standard, rendue nativement par les deux clients ;
 * tous les textes utilisent **Adventure**, supporté identiquement par les deux pipelines.
 
+## 📥 Téléchargement
+
+**Dernière release stable : v1.0.0**
+
+- 🔗 **Page des releases** : https://github.com/Souxch06/Storage_Units/releases
+- 📦 **Téléchargement direct du JAR** : [StorageUnits-1.0.0.jar](https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageUnits-1.0.0.jar)
+
+```bash
+wget https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageUnits-1.0.0.jar -O plugins/StorageUnits-1.0.0.jar
+```
+
+> ✅ JAR compilé automatiquement via GitHub Actions (Java 21, Paper API 1.21.11+). Vérifiez toujours que vous téléchargez depuis la page officielle des releases.
+
 ---
 
 ## 📸 Aperçu visuel
@@ -84,6 +97,9 @@ mvn clean package
 ```
 
 Le jar prêt à l'emploi est dans `target/StorageUnits-1.0.0.jar`.
+
+> 💡 Vous pouvez aussi récupérer le JAR déjà compilé depuis la [dernière release](https://github.com/Souxch06/Storage_Units/releases/latest) :
+> https://github.com/Souxch06/Storage_Units/releases/download/v1.0.0/StorageUnits-1.0.0.jar
 
 ---
 
