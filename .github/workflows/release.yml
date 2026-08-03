@@ -1,0 +1,94 @@
+name: Build & Release JAR
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag pour la release (ex: v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+      version:
+        description: 'Version Maven (ex: 1.0.0)'
+        required: true
+        default: '1.0.0'
+  push:
+    branches:
+      - 'arena/**'
+    paths:
+      - '.github/workflows/release.yml'
+      - 'pom.xml'
+      - 'src/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B clean package
+
+      - name: List target
+        run: ls -lh target/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: StorageUnits-JAR
+          path: target/*.jar
+          if-no-files-found: error
+
+  release:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B clean package
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag }}
+          name: "StorageUnits ${{ inputs.tag }}"
+          body: |
+            ## 📦 Storage Units ${{ inputs.tag }}
+
+            Plugin Paper / Purpur 1.21.11+ (Java 21) - Compatible Java & Bedrock (Geyser/Floodgate)
+
+            ### 📥 Installation
+            1. Téléchargez le fichier `StorageUnits-${{ inputs.version }}.jar` ci-dessous.
+            2. Copiez-le dans `plugins/` de votre serveur Paper 1.21.11+ ou Purpur 1.21.11+.
+            3. Redémarrez le serveur.
+
+            ### ✨ Changelog
+            - Build automatique via GitHub Actions
+            - JAR compilé avec Java 21 et Maven
+
+            ### 🔗 Liens
+            - README mis à jour avec lien de téléchargement direct.
+          files: target/*.jar
+          draft: false
+          prerelease: false
+          generate_release_notes: true
