@@ -30,14 +30,14 @@ public final class ItemUtil {
     private ItemUtil() {
     }
 
-    /**
-     * Convertit une chaîne legacy avec codes couleur {@code &} en {@link Component}.
-     * Accepte également {@code §} et les codes hexadécimaux.
-     */
-    @NotNull
     public static Component colorize(@NotNull String text) {
         Objects.requireNonNull(text, "text");
-        return LEGACY.deserialize(text);
+        return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.builder()
+                .character('&')
+                .hexColors()
+                .useUnusualXRepeatedCharacterHexFormat()
+                .build()
+                .deserialize(text);
     }
 
     /**

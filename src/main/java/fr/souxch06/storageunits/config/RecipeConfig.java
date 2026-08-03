@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.config;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -120,7 +120,7 @@ public final class RecipeConfig {
         result.setAmount(Math.max(1, sec.getInt("amount", 1)));
 
         ShapedRecipe recipe = new ShapedRecipe(nsKey, result);
-        recipe.category(CraftingBookCategory.MISC);
+        // recipe.category(CraftingBookCategory.MISC);
 
         List<String> shapeList = sec.getStringList("shape");
         if (shapeList.size() != 3) {

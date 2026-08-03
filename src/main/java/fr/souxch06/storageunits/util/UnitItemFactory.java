@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.util;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.model.StorageLevel;
 import net.kyori.adventure.text.Component;

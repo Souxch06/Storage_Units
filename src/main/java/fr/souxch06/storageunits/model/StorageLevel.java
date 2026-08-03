@@ -62,7 +62,7 @@ public final class StorageLevel {
             // optionnel pour faciliter la lecture depuis une simple liste.
             level = 1;
         }
-        long capacity = section.getLong("capacity", 1000L);
+        long capacity = section.getLong("capacity", 512L);
         String display = section.getString("display-name", "Niveau " + level);
         return new StorageLevel(level, capacity, display);
     }

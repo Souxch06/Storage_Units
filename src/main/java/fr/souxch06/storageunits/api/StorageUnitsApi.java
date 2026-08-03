@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.api;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import fr.souxch06.storageunits.manager.StorageManager;
 import fr.souxch06.storageunits.model.StorageUnit;
 import org.bukkit.Location;
