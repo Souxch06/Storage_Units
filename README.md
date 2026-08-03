@@ -22,7 +22,7 @@ passant par Geyser/Floodgate, car :
 ### L'interface — unité vide (Niveau 1)
 ![Interface unité vide](docs/screenshots/03-gui-empty.png)
 
-### L'interface — unité remplie (Niveau 3 : 347 250 / 500 000 diamants)
+### L'interface — unité remplie
 ![Interface unité remplie](docs/screenshots/04-gui-filled.png)
 
 ---
@@ -30,7 +30,7 @@ passant par Geyser/Floodgate, car :
 ## ✨ Fonctionnalités
 
 * 📦 Bloc coffre custom — Un seul type d'item à la fois
-* 📈 Système d'**amélioration par niveau** (1 → 4+ configurable)
+* 📈 Système d'**amélioration par niveau** (1 → 5+ configurable)
 * 💾 Persistance YAML (un fichier par unité + un index)
 * 🔌 API publique (pour d'autres plugins)
 * ⚙️ 100 % configurable (capacités, items, sons, recettes, messages)
@@ -93,6 +93,15 @@ Le jar prêt à l'emploi est dans `target/StorageUnits-1.0.0.jar`.
 2. Redémarrer le serveur.
 3. Les fichiers `config.yml`, `lang/fr.yml`, `recipes.yml` sont générés dans `plugins/StorageUnits/`.
 
+### Mise à jour
+
+1. Arrêtez le serveur.
+2. Remplacez le jar existant dans `plugins/` par la nouvelle version.
+3. Redémarrez le serveur.
+
+> ⚠️ **Ne supprimez pas `plugins/StorageUnits/` pendant une mise à jour.** Ce dossier contient
+> votre configuration ainsi que les données persistantes de vos unités dans `units/`.
+
 ---
 
 ## 🎮 Utilisation
@@ -132,11 +141,11 @@ settings:
   max-stacks-per-click: 2304
 
 levels:
-  1: { capacity: 100000,  display-name: "Niveau 1" }
-  2: { capacity: 250000,  display-name: "Niveau 2" }
-  3: { capacity: 500000,  display-name: "Niveau 3" }
-  4: { capacity: 1000000, display-name: "Niveau 4" }
-  5: { capacity: 5000000, display-name: "Niveau 5" }
+  1: { capacity: 512,    display-name: "Niveau 1" }
+  2: { capacity: 2048,   display-name: "Niveau 2" }
+  3: { capacity: 8192,   display-name: "Niveau 3" }
+  4: { capacity: 32768,  display-name: "Niveau 4" }
+  5: { capacity: 131072, display-name: "Niveau 5" }
 
 unit:
   material: CHEST

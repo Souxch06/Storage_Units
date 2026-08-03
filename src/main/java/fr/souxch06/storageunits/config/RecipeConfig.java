@@ -9,12 +9,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.recipe.CraftingBookCategory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -120,7 +118,6 @@ public final class RecipeConfig {
         result.setAmount(Math.max(1, sec.getInt("amount", 1)));
 
         ShapedRecipe recipe = new ShapedRecipe(nsKey, result);
-        // recipe.category(CraftingBookCategory.MISC);
 
         List<String> shapeList = sec.getStringList("shape");
         if (shapeList.size() != 3) {

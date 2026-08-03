@@ -4,15 +4,12 @@ import fr.souxch06.storageunits.model.StorageLevel;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -36,8 +33,8 @@ import java.util.logging.Level;
  *   max-stacks-per-click: 2304
  *   cache-pdc: true
  * levels:
- *   1: { capacity: 100000, display-name: "Niveau 1" }
- *   2: { capacity: 250000, display-name: "Niveau 2" }
+ *   1: { capacity: 512, display-name: "Niveau 1" }
+ *   2: { capacity: 2048, display-name: "Niveau 2" }
  *   ...
  * unit:
  *   material: CHEST
@@ -135,6 +132,7 @@ public final class ConfigManager {
         levels.put(2, new StorageLevel(2, 2048L, "Niveau 2"));
         levels.put(3, new StorageLevel(3, 8192L, "Niveau 3"));
         levels.put(4, new StorageLevel(4, 32768L, "Niveau 4"));
+        levels.put(5, new StorageLevel(5, 131072L, "Niveau 5"));
         this.defaultLevel = 1;
     }
 

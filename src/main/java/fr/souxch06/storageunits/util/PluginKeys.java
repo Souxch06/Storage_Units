@@ -12,8 +12,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class PluginKeys {
 
-    private final Plugin plugin;
-
     /** Tag posé sur l'item "Unité de stockage" pour le reconnaître. */
     public final NamespacedKey UNIT_ITEM;
 
@@ -27,7 +25,6 @@ public final class PluginKeys {
     public final NamespacedKey UNIT_ID;
 
     public PluginKeys(@NotNull Plugin plugin) {
-        this.plugin = plugin;
         this.UNIT_ITEM = new NamespacedKey(plugin, "unit_item");
         this.UNIT_LEVEL = new NamespacedKey(plugin, "unit_level");
         this.UNIT_BLOCK = new NamespacedKey(plugin, "unit_block");

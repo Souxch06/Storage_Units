@@ -12,7 +12,6 @@ import fr.souxch06.storageunits.listeners.UnitItemListener;
 import fr.souxch06.storageunits.manager.StorageManager;
 import fr.souxch06.storageunits.util.PluginKeys;
 import fr.souxch06.storageunits.util.UnitItemFactory;
-import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;

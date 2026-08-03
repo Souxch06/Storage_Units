@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -110,7 +111,10 @@ public final class StorageUnitCommand implements CommandExecutor, TabCompleter {
             return;
         }
         ItemStack item = plugin.getUnitItemFactory().createUnitItem(level);
-        target.getInventory().addItem(item);
+        Map<Integer, ItemStack> leftovers = target.getInventory().addItem(item);
+        for (ItemStack leftover : leftovers.values()) {
+            target.getWorld().dropItemNaturally(target.getLocation(), leftover);
+        }
         sender.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                 "msg.give-success", "&aVous avez donné une unité de niveau {level} à {player}.")
                 .replace("{level}", String.valueOf(level))

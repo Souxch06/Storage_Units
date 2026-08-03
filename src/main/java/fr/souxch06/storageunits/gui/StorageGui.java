@@ -227,13 +227,12 @@ public final class StorageGui implements InventoryHolder {
     public void handleClick(@NotNull InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        Inventory top = event.getView().getTopInventory();
         int slot = event.getRawSlot();
         boolean inTop = slot >= 0 && slot < SIZE;
 
         if (inTop) {
             event.setCancelled(true);
-            
+
             if (slot == SLOT_UPGRADE) {
                 handleUpgrade(player);
             } else if (slot == SLOT_WITHDRAW) {
@@ -255,7 +254,7 @@ public final class StorageGui implements InventoryHolder {
                     }
                 }
             }
-            
+
             player.updateInventory();
             return;
         }
@@ -276,10 +275,7 @@ public final class StorageGui implements InventoryHolder {
                 }
             }
         }
-        
-        if (event.getAction().name().contains("HOTBAR") && inTop) {
-            event.setCancelled(true);
-        }
+
     }
 
     private void handleWithdraw(@NotNull Player player, boolean all) {

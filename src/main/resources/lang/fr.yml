@@ -43,9 +43,12 @@ gui:
 msg:
   placed: "&aVous avez placé une unité de stockage (niveau {level})."
   already-here: "&cUne unité est déjà présente à cet emplacement."
+  no-double-chest: "&cLes unités de stockage ne peuvent pas être placées à côté d'un autre coffre."
   no-permission: "&cVous n'avez pas la permission."
   deposit: "&aVous avez déposé {amount} objet(s)."
   deposit-failed: "&cVous ne pouvez rien déposer ici."
+  deposit-ambiguous: "&cPlusieurs types d'objets détectés. Déposez d'abord un stack manuellement pour choisir le type."
+  withdraw-empty: "&cCette unité est vide."
   withdraw-all: "&aVous avez retiré {amount} objet(s)."
   upgrade-success: "&aUnité améliorée au niveau {level} !"
   upgrade-max: "&7Cette unité est au niveau maximum."

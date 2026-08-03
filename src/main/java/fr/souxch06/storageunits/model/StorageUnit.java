@@ -129,10 +129,6 @@ public final class StorageUnit {
     public boolean accepts(@NotNull ItemStack candidate) {
         Objects.requireNonNull(candidate, "candidate");
         if (candidate.getType().isAir()) return false;
-        // On refuse de stocker les unités de stockage elles-mêmes pour éviter les abus/bugs
-        if (candidate.getType() == org.bukkit.Material.CHEST && candidate.hasItemMeta()) {
-             // On pourrait vérifier plus précisément le PDC ici si besoin
-        }
         if (storedTemplate == null || amount <= 0) return true;
         return storedTemplate.getType() == candidate.getType();
     }
