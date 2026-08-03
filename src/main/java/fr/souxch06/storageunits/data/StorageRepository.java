@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.data;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import fr.souxch06.storageunits.model.StorageUnit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

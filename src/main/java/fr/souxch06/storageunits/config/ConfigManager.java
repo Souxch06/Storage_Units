@@ -116,10 +116,10 @@ public final class ConfigManager {
     }
 
     private void loadDefaultLevels() {
-        levels.put(1, new StorageLevel(1, 100_000L, "Niveau 1"));
-        levels.put(2, new StorageLevel(2, 250_000L, "Niveau 2"));
-        levels.put(3, new StorageLevel(3, 500_000L, "Niveau 3"));
-        levels.put(4, new StorageLevel(4, 1_000_000L, "Niveau 4"));
+        levels.put(1, new StorageLevel(1, 512L, "Niveau 1"));
+        levels.put(2, new StorageLevel(2, 2048L, "Niveau 2"));
+        levels.put(3, new StorageLevel(3, 8192L, "Niveau 3"));
+        levels.put(4, new StorageLevel(4, 32768L, "Niveau 4"));
         this.defaultLevel = 1;
     }
 

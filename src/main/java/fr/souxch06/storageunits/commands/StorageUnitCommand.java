@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.commands;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.config.LanguageManager;
 import fr.souxch06.storageunits.manager.StorageManager;

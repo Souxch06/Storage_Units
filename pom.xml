@@ -43,7 +43,7 @@
             On utilise l'API "paper-api" qui contient déjà Bukkit + Spigot + Paper.
             Pour Paper 1.21.11, l'artefact devient : io.papermc.paper:paper-api
             -->
-        <paper.api.version>1.21.11-R0.1-SNAPSHOT</paper.api.version>
+        <paper.api.version>1.21.1-R0.1-SNAPSHOT</paper.api.version>
     </properties>
 
     <repositories>

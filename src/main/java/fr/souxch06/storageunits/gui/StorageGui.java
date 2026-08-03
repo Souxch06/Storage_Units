@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.gui;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.config.LanguageManager;
 import fr.souxch06.storageunits.manager.StorageManager;
@@ -8,7 +8,6 @@ import fr.souxch06.storageunits.model.StorageLevel;
 import fr.souxch06.storageunits.model.StorageUnit;
 import fr.souxch06.storageunits.util.ItemUtil;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -23,39 +22,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
-/**
- * Interface graphique d'une unité de stockage.
- *
- * <h2>Layout (27 cases = 3 lignes)</h2>
- * <pre>
- *  0  1  2  3  4  5  6  7  8
- *  9 10 11 12 13 14 15 16 17
- * 18 19 20 21 22 23 24 25 26
- * </pre>
- * <ul>
- *     <li>Slot 4 (centre ligne 1) : icône de l'item stocké</li>
- *     <li>Slot 11 : bouton "Tout déposer" (1/16, 1/4, 1/2, tout)</li>
- *     <li>Slot 13 : infos (type, quantité, capacité)</li>
- *     <li>Slot 15 : bouton "Tout retirer"</li>
- *     <li>Slot 22 : bouton "Améliorer"</li>
- *     <li>Slot 0, 8, 18, 26 : bordures</li>
- * </ul>
- *
- * <p>L'interface utilise des markers (nbt) internes pour ne pas interférer
- * avec d'autres plugins qui auraient placé des items similaires dans l'inventaire.</p>
- */
 public final class StorageGui implements InventoryHolder {
 
     public static final int SIZE = 27;
 
-    // Slots fonctionnels
     public static final int SLOT_BORDER = -1;
     public static final int SLOT_INFO = 13;
     public static final int SLOT_ICON = 4;
     public static final int SLOT_DEPOSIT = 11;
     public static final int SLOT_WITHDRAW = 15;
     public static final int SLOT_UPGRADE = 22;
+
+    private static final Map<Inventory, StorageGui> INSTANCES = new WeakHashMap<>();
 
     private final StorageUnits plugin;
     private final StorageManager manager;
@@ -64,36 +45,27 @@ public final class StorageGui implements InventoryHolder {
 
     public StorageGui(@NotNull StorageUnits plugin,
                       @NotNull StorageManager manager,
-                      @NotNull StorageUnit unit) {
+                      @NotNull StorageUnit unit,
+                      @NotNull Inventory inventory) {
         this.plugin = plugin;
         this.manager = manager;
         this.unit = unit;
-        ConfigManager cfg = plugin.getConfigManager();
-        LanguageManager lang = plugin.getLanguageManager();
-        Component title = ItemUtil.colorize(
-                "&8" + lang.get("gui.title", "Unité de stockage")
-                        + " &7- " + cfg.getLevel(unit.getLevel()).getDisplayName());
-        this.inventory = Bukkit.createInventory(this, SIZE, title);
+        this.inventory = inventory;
+        INSTANCES.put(inventory, this);
         render();
     }
 
-    /**
-     * Reconstruit entièrement le contenu de l'inventaire en fonction de l'état
-     * actuel de l'unité.
-     */
     public void render() {
         inventory.clear();
         ConfigManager cfg = plugin.getConfigManager();
         LanguageManager lang = plugin.getLanguageManager();
 
-        // Bordures
         ItemStack border = makeBorder();
         inventory.setItem(0, border);
         inventory.setItem(8, border);
         inventory.setItem(18, border);
         inventory.setItem(26, border);
 
-        // Icône de l'item stocké
         ItemStack icon = unit.getStoredTemplate() == null
                 ? new ItemStack(Material.BARRIER)
                 : unit.getStoredTemplate().clone();
@@ -117,9 +89,8 @@ public final class StorageGui implements InventoryHolder {
         }
         inventory.setItem(SLOT_ICON, icon);
 
-        // Info centrale
         StorageLevel sl = cfg.getLevel(unit.getLevel());
-        long cap = sl == null ? 0 : sl.getCapacity();
+        long cap = sl == null ? 512 : sl.getCapacity();
         ItemStack info = new ItemStack(Material.PAPER);
         ItemMeta infoMeta = info.getItemMeta();
         if (infoMeta != null) {
@@ -152,7 +123,6 @@ public final class StorageGui implements InventoryHolder {
         }
         inventory.setItem(SLOT_INFO, info);
 
-        // Bouton "Déposer"
         ItemStack deposit = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta dMeta = deposit.getItemMeta();
         if (dMeta != null) {
@@ -169,7 +139,6 @@ public final class StorageGui implements InventoryHolder {
         }
         inventory.setItem(SLOT_DEPOSIT, deposit);
 
-        // Bouton "Retirer"
         ItemStack withdraw = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta wMeta = withdraw.getItemMeta();
         if (wMeta != null) {
@@ -185,7 +154,6 @@ public final class StorageGui implements InventoryHolder {
         }
         inventory.setItem(SLOT_WITHDRAW, withdraw);
 
-        // Bouton "Améliorer"
         StorageLevel next = cfg.getLevel(unit.getLevel() + 1);
         ItemStack upgrade;
         if (next == null) {
@@ -241,9 +209,6 @@ public final class StorageGui implements InventoryHolder {
         return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
-    /**
-     * Ouvre l'interface pour un joueur.
-     */
     public void open(@NotNull Player player) {
         player.openInventory(inventory);
     }
@@ -259,86 +224,105 @@ public final class StorageGui implements InventoryHolder {
         return unit;
     }
 
-    // ---------- Gestion des clics ----------
-
-    /**
-     * Appelé par le listener GUI à chaque clic dans cet inventaire.
-     */
     public void handleClick(@NotNull InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
+        Inventory top = event.getView().getTopInventory();
         int slot = event.getRawSlot();
         boolean inTop = slot >= 0 && slot < SIZE;
-        if (!inTop) {
-            // Clic dans l'inventaire du joueur. On autorise normalement.
-            // Shift + clic sur item compatible : on dépose automatiquement.
-            if (event.isShiftClick()) {
-                ItemStack current = event.getCurrentItem();
-                if (current != null && !current.getType().isAir() && unit.accepts(current)) {
-                    event.setCancelled(true);
-                    // On calcule la quantité maximum qu'on peut déposer
-                    long added = manager.deposit(unit, current.clone());
-                    if (added > 0) {
-                        int left = current.getAmount() - (int) added;
-                        if (left <= 0) {
-                            event.setCurrentItem(null);
-                        } else {
-                            current.setAmount(left);
+
+        if (inTop) {
+            event.setCancelled(true);
+            
+            if (slot == SLOT_UPGRADE) {
+                handleUpgrade(player);
+            } else if (slot == SLOT_WITHDRAW) {
+                handleWithdraw(player, event.isShiftClick());
+            } else if (slot == SLOT_DEPOSIT) {
+                if (event.isShiftClick()) {
+                    handleDeposit(player);
+                } else {
+                    ItemStack cursor = event.getCursor();
+                    if (cursor != null && !cursor.getType().isAir()) {
+                        if (unit.accepts(cursor)) {
+                            long added = manager.deposit(unit, cursor);
+                            if (added > 0) {
+                                event.setCursor(cursor);
+                                playSound(player, config().getSound("deposit"));
+                                render();
+                            }
                         }
-                        playSound(player, config().getSound("deposit"));
-                        player.sendMessage(plugin.getLanguageManager().get(
-                                "msg.deposit", "&aVous avez déposé {amount} objet(s).")
-                                .replace("{amount}", String.valueOf(added)));
-                        render();
                     }
                 }
             }
+            
+            player.updateInventory();
             return;
         }
 
-        // Clic dans la GUI : on annule pour éviter la prise des items décoratifs
-        event.setCancelled(true);
-
-        // Bouton "Améliorer"
-        if (slot == SLOT_UPGRADE) {
-            handleUpgrade(player);
-            return;
-        }
-
-        // Bouton "Retirer"
-        if (slot == SLOT_WITHDRAW) {
-            if (event.isShiftClick()) {
-                // Tout retirer
-                long taken = manager.withdraw(unit, player, unit.getAmount());
-                if (taken > 0) {
-                    playSound(player, config().getSound("withdraw"));
-                    player.sendMessage(plugin.getLanguageManager().get(
-                            "msg.withdraw-all", "&aVous avez retiré {amount} objet(s).")
-                            .replace("{amount}", String.valueOf(taken)));
-                }
-            } else {
-                // Retrait d'un stack
-                int max = unit.getStoredTemplate() == null
-                        ? 0
-                        : unit.getStoredTemplate().getType().getMaxStackSize();
-                long taken = manager.withdraw(unit, player, max);
-                if (taken > 0) {
-                    playSound(player, config().getSound("withdraw"));
+        if (event.isShiftClick()) {
+            ItemStack current = event.getCurrentItem();
+            if (current != null && !current.getType().isAir()) {
+                if (unit.accepts(current)) {
+                    event.setCancelled(true);
+                    long added = manager.deposit(unit, current);
+                    if (added > 0) {
+                        playSound(player, config().getSound("deposit"));
+                        render();
+                        player.updateInventory();
+                    }
+                } else {
+                    event.setCancelled(true);
                 }
             }
-            render();
-            return;
         }
-
-        // Bouton "Déposer" : on dépose tout l'inventaire du joueur
-        // qui correspond au type attendu.
-        if (slot == SLOT_DEPOSIT) {
-            handleDeposit(player);
-            return;
+        
+        if (event.getAction().name().contains("HOTBAR") && inTop) {
+            event.setCancelled(true);
         }
     }
 
+    private void handleWithdraw(@NotNull Player player, boolean all) {
+        if (unit.getStoredTemplate() == null || unit.getAmount() <= 0) {
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.withdraw-empty", "&cCette unité est vide.")));
+            return;
+        }
+
+        if (all) {
+            long taken = manager.withdraw(unit, player, unit.getAmount());
+            if (taken > 0) {
+                playSound(player, config().getSound("withdraw"));
+                player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                        "msg.withdraw-all", "&aVous avez retiré {amount} objet(s).")
+                        .replace("{amount}", String.valueOf(taken))));
+            }
+        } else {
+            int max = unit.getStoredTemplate().getType().getMaxStackSize();
+            long taken = manager.withdraw(unit, player, max);
+            if (taken > 0) {
+                playSound(player, config().getSound("withdraw"));
+            }
+        }
+        render();
+    }
+
     private void handleDeposit(@NotNull Player player) {
+        if (unit.getStoredTemplate() == null || unit.getAmount() <= 0) {
+            java.util.Set<Material> types = new java.util.HashSet<>();
+            for (ItemStack is : player.getInventory().getStorageContents()) {
+                if (is != null && !is.getType().isAir()) {
+                    types.add(is.getType());
+                }
+            }
+            if (types.size() > 1) {
+                String message = plugin.getLanguageManager().get(
+                        "msg.deposit-ambiguous", "&cPlusieurs types d'objets détectés. Déposez d'abord un stack manuellement.");
+                player.sendMessage(ItemUtil.colorize(message));
+                return;
+            }
+        }
+
         long total = 0L;
         ItemStack[] contents = player.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
@@ -359,12 +343,13 @@ public final class StorageGui implements InventoryHolder {
         }
         if (total > 0) {
             playSound(player, config().getSound("deposit"));
-            player.sendMessage(plugin.getLanguageManager().get(
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                     "msg.deposit", "&aVous avez déposé {amount} objet(s).")
-                    .replace("{amount}", String.valueOf(total)));
+                    .replace("{amount}", String.valueOf(total))));
+            player.updateInventory();
         } else {
-            player.sendMessage(plugin.getLanguageManager().get(
-                    "msg.deposit-failed", "&cVous ne pouvez rien déposer ici."));
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.deposit-failed", "&cVous ne pouvez rien déposer ici.")));
         }
         render();
     }
@@ -372,25 +357,25 @@ public final class StorageGui implements InventoryHolder {
     private void handleUpgrade(@NotNull Player player) {
         StorageLevel next = config().getLevel(unit.getLevel() + 1);
         if (next == null) {
-            player.sendMessage(plugin.getLanguageManager().get(
-                    "msg.upgrade-max", "&7Cette unité est au niveau maximum."));
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.upgrade-max", "&7Cette unité est au niveau maximum.")));
             return;
         }
         if (next.getCapacity() < unit.getAmount()) {
-            player.sendMessage(plugin.getLanguageManager().get(
-                    "msg.upgrade-too-full", "&cVidez l'unité avant de l'améliorer."));
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.upgrade-too-full", "&cVidez l'unité avant de l'améliorer.")));
             return;
         }
         if (!player.hasPermission("storageunits.upgrade")) {
-            player.sendMessage(plugin.getLanguageManager().get(
-                    "msg.no-permission", "&cVous n'avez pas la permission."));
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.no-permission", "&cVous n'avez pas la permission.")));
             return;
         }
         if (manager.upgrade(unit)) {
             playSound(player, config().getSound("upgrade"));
-            player.sendMessage(plugin.getLanguageManager().get(
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
                     "msg.upgrade-success", "&aUnité améliorée au niveau {level} !")
-                    .replace("{level}", next.getDisplayName()));
+                    .replace("{level}", next.getDisplayName())));
         }
         render();
     }
@@ -406,20 +391,15 @@ public final class StorageGui implements InventoryHolder {
         return plugin.getConfigManager();
     }
 
-    /**
-     * Appelé lors de la fermeture de l'inventaire. Pour l'instant : rien à
-     * faire de spécifique, mais prévu pour libérer des ressources si besoin.
-     */
     public void handleClose(@NotNull InventoryCloseEvent event) {
-        // No-op
+        // Animation automatique via inventaire lié au bloc
+        inventory.clear(); // Optionnel : vide l'inventaire visuel pour ne pas laisser de traces
     }
 
-    /**
-     * Helper pour ouvrir une GUI depuis n'importe quel endroit (le listener
-     * peut ainsi conserver une référence à l'instance).
-     */
     @Nullable
     public static StorageGui fromInventory(@NotNull Inventory inv) {
+        StorageGui cached = INSTANCES.get(inv);
+        if (cached != null) return cached;
         if (inv.getHolder() instanceof StorageGui gui) {
             return gui;
         }

@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.listeners;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.gui.StorageGui;
 import fr.souxch06.storageunits.manager.StorageManager;
@@ -21,6 +21,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+
+import fr.souxch06.storageunits.util.ItemUtil;
 
 /**
  * Gère l'interaction avec le bloc unité (clic droit) et l'ouverture du GUI.
@@ -51,20 +53,12 @@ public final class UnitInteractionListener implements Listener {
         StorageManager manager = plugin.getStorageManager();
         StorageUnit unit = manager.getUnitAt(block.getLocation());
         if (unit == null) {
-            // Cas pathologique : bloc tagué sans unité associée
             return;
         }
         if (!player.hasPermission("storageunits.use")) {
-            player.sendMessage(plugin.getLanguageManager().get(
-                    "msg.no-permission", "&cVous n'avez pas la permission."));
+            player.sendMessage(ItemUtil.colorize(plugin.getLanguageManager().get(
+                    "msg.no-permission", "&cVous n'avez pas la permission.")));
             return;
-        }
-
-        // Son d'ouverture
-        try {
-            ConfigManager cfg = plugin.getConfigManager();
-            player.playSound(player.getLocation(), cfg.getSound("open"), 0.8f, 1.0f);
-        } catch (Exception ignored) {
         }
 
         manager.openGui(player, unit);

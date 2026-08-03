@@ -1,6 +1,6 @@
 package fr.souxch06.storageunits.listeners;
 
-import fr.souxch06.storageunits.StorageUnits;
+import fr.souxch06.storageunits.bootstrap.StorageUnits;
 import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.manager.StorageManager;
 import fr.souxch06.storageunits.model.StorageUnit;
@@ -34,6 +34,7 @@ import java.util.List;
  *     <li>un bloc d'unité cassé drop son item "Unité" (avec ses niveaux)</li>
  *     <li>un bloc d'unité déplacé par un piston conserve son état</li>
  *     <li>une explosion ne supprime pas l'unité sans la prévenir</li>
+ *     <li>le contenu de l'unité est droppé au sol</li>
  * </ul>
  */
 public final class UnitBlockListener implements Listener {
@@ -51,28 +52,47 @@ public final class UnitBlockListener implements Listener {
         return pdc.has(plugin.getPluginKeys().UNIT_BLOCK, PersistentDataType.BYTE);
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onBreak(@NotNull BlockBreakEvent event) {
-        Block block = event.getBlock();
-        if (!isUnitBlock(block)) return;
-
-        StorageManager manager = plugin.getStorageManager();
-        StorageUnit unit = manager.getUnitAt(block.getLocation());
-        if (unit == null) return;
-
-        Player player = event.getPlayer();
-        ConfigManager cfg = plugin.getConfigManager();
-
-        // Création de l'item drop
-        ItemStack drop = plugin.getUnitItemFactory().createUnitItem(unit.getLevel());
-        block.getWorld().dropItemNaturally(block.getLocation(), drop);
-
-        // Suppression de l'unité
-        manager.removeUnit(unit);
-
-        // Annule le drop vanilla de coffre
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)  
+    public void onBreak(@NotNull BlockBreakEvent event) {  
+        Block block = event.getBlock();  
+        if (!isUnitBlock(block)) return;  
+  
+        StorageManager manager = plugin.getStorageManager();  
+        StorageUnit unit = manager.getUnitAt(block.getLocation());  
+        if (unit == null) return;  
+  
+        // 1. Annuler les drops vanilla et forcer le retrait
         event.setDropItems(false);
         event.setExpToDrop(0);
+
+        // 2. Drop du contenu
+        dropContent(unit, block.getLocation());
+
+        // 3. Création de l'item drop de l'unité
+        ItemStack unitDrop = plugin.getUnitItemFactory().createUnitItem(unit.getLevel());
+        
+        // 4. Suppression de l'unité et du bloc physiquement
+        manager.removeUnit(unit);
+        block.setType(Material.AIR); // Force la disparition du bloc pour éviter le bug visuel
+
+        // 5. Drop de l'unité elle-même
+        block.getWorld().dropItemNaturally(block.getLocation(), unitDrop);
+    }  
+
+    private void dropContent(StorageUnit unit, Location loc) {
+        if (unit.getStoredTemplate() != null && unit.getAmount() > 0) {
+            long amount = unit.getAmount();
+            ItemStack template = unit.getStoredTemplate();
+            int maxStack = template.getType().getMaxStackSize();
+            
+            while (amount > 0) {
+                int toDrop = (int) Math.min(amount, maxStack);
+                ItemStack stack = template.clone();
+                stack.setAmount(toDrop);
+                loc.getWorld().dropItemNaturally(loc, stack);
+                amount -= toDrop;
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -100,7 +120,7 @@ public final class UnitBlockListener implements Listener {
         List<Block> toRemove = new ArrayList<>();
         for (Block b : event.blockList()) {
             if (isUnitBlock(b)) {
-                dropUnit(b, null);
+                dropUnit(b);
                 toRemove.add(b);
             }
         }
@@ -112,18 +132,22 @@ public final class UnitBlockListener implements Listener {
         List<Block> toRemove = new ArrayList<>();
         for (Block b : event.blockList()) {
             if (isUnitBlock(b)) {
-                dropUnit(b, null);
+                dropUnit(b);
                 toRemove.add(b);
             }
         }
         event.blockList().removeAll(toRemove);
     }
 
-    private void dropUnit(@NotNull Block block, @org.jetbrains.annotations.Nullable Player who) {
+    private void dropUnit(@NotNull Block block) {
         StorageUnit unit = plugin.getStorageManager().getUnitAt(block.getLocation());
         if (unit == null) return;
+        
+        dropContent(unit, block.getLocation());
+
         ItemStack drop = plugin.getUnitItemFactory().createUnitItem(unit.getLevel());
         block.getWorld().dropItemNaturally(block.getLocation(), drop);
         plugin.getStorageManager().removeUnit(unit);
+        block.setType(Material.AIR);
     }
 }
