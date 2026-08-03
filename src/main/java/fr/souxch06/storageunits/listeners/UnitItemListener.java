@@ -33,7 +33,7 @@ public final class UnitItemListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
     public void onPlacePrepare(@NotNull BlockPlaceEvent event) {
-        ItemStack item = event.getItem();
+        ItemStack item = event.getItemInHand();
         UnitItemFactory factory = plugin.getUnitItemFactory();
         if (!factory.isUnitItem(item)) return;
 
@@ -61,7 +61,7 @@ public final class UnitItemListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlaceTag(@NotNull BlockPlaceEvent event) {
-        ItemStack item = event.getItem();
+        ItemStack item = event.getItemInHand();
         UnitItemFactory factory = plugin.getUnitItemFactory();
         if (!factory.isUnitItem(item)) return;
 
