@@ -5,11 +5,10 @@ import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.gui.StorageGui;
 import fr.souxch06.storageunits.manager.StorageManager;
 import fr.souxch06.storageunits.model.StorageUnit;
+import fr.souxch06.storageunits.util.ItemUtil;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,11 +17,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-
-import fr.souxch06.storageunits.util.ItemUtil;
 
 /**
  * Gère l'interaction avec le bloc unité (clic droit) et l'ouverture du GUI.
@@ -37,7 +35,8 @@ public final class UnitInteractionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onInteract(@NotNull PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND
+                || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Block block = event.getClickedBlock();
         if (block == null || block.getType() != Material.CHEST) return;
         if (!(block.getState() instanceof org.bukkit.block.TileState state)) return;

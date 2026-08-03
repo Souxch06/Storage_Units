@@ -1,16 +1,11 @@
 package fr.souxch06.storageunits.listeners;
 
 import fr.souxch06.storageunits.bootstrap.StorageUnits;
-import fr.souxch06.storageunits.config.ConfigManager;
 import fr.souxch06.storageunits.manager.StorageManager;
 import fr.souxch06.storageunits.model.StorageUnit;
-import fr.souxch06.storageunits.util.UnitItemFactory;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -25,7 +20,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -52,15 +46,15 @@ public final class UnitBlockListener implements Listener {
         return pdc.has(plugin.getPluginKeys().UNIT_BLOCK, PersistentDataType.BYTE);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)  
-    public void onBreak(@NotNull BlockBreakEvent event) {  
-        Block block = event.getBlock();  
-        if (!isUnitBlock(block)) return;  
-  
-        StorageManager manager = plugin.getStorageManager();  
-        StorageUnit unit = manager.getUnitAt(block.getLocation());  
-        if (unit == null) return;  
-  
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBreak(@NotNull BlockBreakEvent event) {
+        Block block = event.getBlock();
+        if (!isUnitBlock(block)) return;
+
+        StorageManager manager = plugin.getStorageManager();
+        StorageUnit unit = manager.getUnitAt(block.getLocation());
+        if (unit == null) return;
+
         // 1. Annuler les drops vanilla et forcer le retrait
         event.setDropItems(false);
         event.setExpToDrop(0);
@@ -70,21 +64,21 @@ public final class UnitBlockListener implements Listener {
 
         // 3. Création de l'item drop de l'unité
         ItemStack unitDrop = plugin.getUnitItemFactory().createUnitItem(unit.getLevel());
-        
+
         // 4. Suppression de l'unité et du bloc physiquement
         manager.removeUnit(unit);
         block.setType(Material.AIR); // Force la disparition du bloc pour éviter le bug visuel
 
         // 5. Drop de l'unité elle-même
         block.getWorld().dropItemNaturally(block.getLocation(), unitDrop);
-    }  
+    }
 
     private void dropContent(StorageUnit unit, Location loc) {
         if (unit.getStoredTemplate() != null && unit.getAmount() > 0) {
             long amount = unit.getAmount();
             ItemStack template = unit.getStoredTemplate();
             int maxStack = template.getType().getMaxStackSize();
-            
+
             while (amount > 0) {
                 int toDrop = (int) Math.min(amount, maxStack);
                 ItemStack stack = template.clone();
@@ -142,7 +136,7 @@ public final class UnitBlockListener implements Listener {
     private void dropUnit(@NotNull Block block) {
         StorageUnit unit = plugin.getStorageManager().getUnitAt(block.getLocation());
         if (unit == null) return;
-        
+
         dropContent(unit, block.getLocation());
 
         ItemStack drop = plugin.getUnitItemFactory().createUnitItem(unit.getLevel());

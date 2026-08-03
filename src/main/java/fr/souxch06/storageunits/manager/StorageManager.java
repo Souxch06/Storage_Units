@@ -6,7 +6,6 @@ import fr.souxch06.storageunits.data.StorageRepository;
 import fr.souxch06.storageunits.gui.StorageGui;
 import fr.souxch06.storageunits.model.StorageLevel;
 import fr.souxch06.storageunits.model.StorageUnit;
-import fr.souxch06.storageunits.util.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-
 
 public final class StorageManager {
 
@@ -58,7 +56,6 @@ public final class StorageManager {
         UUID id = UUID.randomUUID();
         StorageUnit unit = new StorageUnit(id, location, level, owner);
         units.put(id, unit);
-        repository.registerLocation(location, id);
         repository.save(unit);
         return unit;
     }
@@ -142,11 +139,11 @@ public final class StorageManager {
 
         long actuallyTaken = amount - remaining;
         unit.setAmount(unit.getAmount() - actuallyTaken);
-        
+
         if (unit.getAmount() <= 0) {
             unit.setStoredTemplate(null);
         }
-        
+
         repository.save(unit);
         return actuallyTaken;
     }

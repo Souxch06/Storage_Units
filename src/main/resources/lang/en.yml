@@ -41,9 +41,12 @@ gui:
 msg:
   placed: "&aYou placed a storage unit (level {level})."
   already-here: "&cA unit is already present at this location."
+  no-double-chest: "&cStorage units cannot be placed next to another chest."
   no-permission: "&cYou don't have permission."
   deposit: "&aYou deposited {amount} item(s)."
   deposit-failed: "&cYou cannot deposit anything here."
+  deposit-ambiguous: "&cMultiple item types detected. Deposit one stack manually first to choose the type."
+  withdraw-empty: "&cThis storage unit is empty."
   withdraw-all: "&aYou withdrew {amount} item(s)."
   upgrade-success: "&aUnit upgraded to level {level}!"
   upgrade-max: "&7This unit is at the maximum level."

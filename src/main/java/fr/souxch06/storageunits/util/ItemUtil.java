@@ -32,12 +32,7 @@ public final class ItemUtil {
 
     public static Component colorize(@NotNull String text) {
         Objects.requireNonNull(text, "text");
-        return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.builder()
-                .character('&')
-                .hexColors()
-                .useUnusualXRepeatedCharacterHexFormat()
-                .build()
-                .deserialize(text);
+        return LEGACY.deserialize(text);
     }
 
     /**

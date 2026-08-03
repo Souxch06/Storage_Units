@@ -9,8 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -283,24 +281,15 @@ public final class StorageRepository {
     }
 
     /**
-     * Met à jour l'index avec une correspondance explicite emplacement -> id.
-     * Utilisé lors du premier enregistrement d'une unité.
+     * Retourne un instantané immuable des identifiants indexés.
      */
-    public void registerLocation(@NotNull Location location, @NotNull UUID id) {
+    @NotNull
+    public Collection<UUID> allIds() {
         lock.lock();
         try {
-            String key = (location.getWorld() == null ? "?" : location.getWorld().getName())
-                    + "," + location.getBlockX()
-                    + "," + location.getBlockY()
-                    + "," + location.getBlockZ();
-            locationIndex.put(key, id);
-            saveIndex();
+            return List.copyOf(locationIndex.values());
         } finally {
             lock.unlock();
         }
-    }
-
-    public Collection<UUID> allIds() {
-        return locationIndex.values();
     }
 }
